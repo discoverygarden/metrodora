@@ -4,7 +4,6 @@ CONTENTS OF THIS FILE
  * summary
  * requirements
  * installation
- * customization
 
 SUMMARY
 -------
