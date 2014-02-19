@@ -1,0 +1,7 @@
+name = Metrodora
+description = "Custom Islandora functionality for Metro"
+package = Islandora
+dependencies[] = islandora
+dependencies[] = islandora_basic_collection
+core = 7.x
+php = 5.3

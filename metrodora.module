@@ -1,0 +1,181 @@
+<?php
+/**
+ * @file
+ * Metro specific Islandora functionality.
+ */
+
+/**
+ * Implements hook_CMODEL_PID_islandora_overview_object().
+ */
+function metrodora_islandora_collectionCModel_islandora_overview_object(AbstractObject $object) {
+  $total_results = 0;
+  $rows = array();
+  $model_query = metrodora_get_all_objects_query_info(array(
+    'object' => $object,
+    'page_size' => -1,
+    'page_number' => 0,
+    'vars' => '?model',
+    'order_by' => FALSE,
+  ));
+  $models = (array) $object->repository->ri->query($model_query['query'], $model_query['type']);
+  $ignore_models = array(
+    'fedora-system:FedoraObject-3.0',
+  );
+  foreach ($models as $model) {
+    $model_pid = $model['model']['value'];
+    if (in_array($model_pid, $ignore_models)) {
+      continue;
+    }
+    $model_count_query = metrodora_get_all_objects_query_info(array(
+      'object' => $object,
+      'page_size' => -1,
+      'page_number' => 0,
+      'order_by' => FALSE,
+      'model' => "<info:fedora/$model_pid>",
+    ));
+    $model_object = islandora_object_load($model_pid);
+    if (variable_get('islandora_basic_collection_disable_count_object', FALSE)) {
+      $rows[$model_pid] = array(
+        ($model_object ?
+          l($model_object->label, "islandora/object/{$model_object->id}") :
+          $model_pid),
+      );
+    }
+    else {
+      $model_count = $object->repository->ri->countQuery($model_count_query['query'], $model_count_query['type']);
+      $total_results += $model_count;
+      $rows[$model_pid] = array(
+        ($model_object ?
+          l($model_object->label, "islandora/object/{$model_object->id}") :
+          $model_pid),
+        $model_count,
+      );
+    }
+  }
+
+  $content = array(
+    'total' => array(
+      '#markup' => t('Total members: %total', array('%total' => $total_results)),
+      '#weight' => 9,
+    ),
+    'table' => array(
+      '#theme' => 'table',
+      '#header' => array(
+        'type' => array('data' => t('Type')),
+        'count' => array('data' => t('Count')),
+      ),
+      '#rows' => $rows,
+      '#empty' => t('Collection is empty.'),
+      '#weight' => 10,
+    ),
+
+  );
+  if (variable_get('islandora_basic_collection_disable_count_object', FALSE)) {
+    unset($content['total']);
+    unset($content['table']['#header']['count']);
+  }
+  return array(
+    'metro_count' => array(
+      '#markup' => drupal_render($content),
+      '#weight' => 10,
+    ),
+  );
+}
+
+/**
+ * Implements hook_CMODEL_PID_islandora_overview_object_alter().
+ */
+function metrodora_islandora_collectionCModel_islandora_overview_object_alter(AbstractObject $object, &$output) {
+  // Modify the collection markup to say that these counts are only for visible
+  // objects.
+  $output['collection']['#markup'] = str_replace(t('Total members'), t('Total visible members'), $output['collection']['#markup']);
+}
+
+/**
+ * Metro's awesomely custom display of everything without FILTERs.
+ *
+ * @note This is a lot of copypasta, apologies but Metro wants it.
+ *
+ * @see islandora_basic_collection_get_query_info()
+ *
+ * @throws Exception if the object parameter is not set.
+ *
+ * @param array $params
+ *   An array containing all the parameters, at least:
+ *   - object: An AbstractObject we're querying for.
+ *   but may also contain:
+ *   - page_size: The size of the page/number of results to return. Defaults to
+ *   10.
+ *   - page_number: An integer representing the offset as a multiple of
+ *   page_size. Defaults to 0.
+ *   - vars: A string containing the list of variables to select. Defaults to
+ *   "?object ?title".
+ *   - order_by: A string indicating which variable by which to sort. Defaults
+ *   to "?title". May be set to FALSE to avoid sorting.
+ *   - model: A string representing a URI. Defaults to "?model". Could be
+ *   provided as "<info:fedora/cmodel:pid>" if the type of object to query
+ *   should be filtered.
+ * @param string $type
+ *   Either 'view' or 'manage', its meant to repersent how the objects will be
+ *   used.
+ *
+ * @return array
+ *   An array containing a number of keys used to describe the query,
+ *   including all the values from $params (which haven't been unset in the
+ *   alter), in addition to:
+ *   - query: The actual query string.
+ *   - type: A string containing the type of query, likely one of:
+ *   - itql; or,
+ *   - sparql.
+ *   - pid: The pid of the collection being queried.
+ */
+function metrodora_get_all_objects_query_info(array $params, $type = 'view') {
+  if (!isset($params['object'])) {
+    throw new Exception(t('!function requires "!object_parameter" to be given in the array of parameters.', array(
+      '!function' => __FUNCTION__,
+      '!object_parameter' => 'object',
+    )));
+  }
+
+  // Add in defaults.
+  $params += array(
+    'page_number' => 0,
+    'page_size' => 10,
+    'vars' => '?object ?title ?owner ?date_modified',
+    'order_by' => '?title',
+    'model' => '?model',
+  );
+
+  $object = $params['object'];
+
+  $query = <<<EOQ
+SELECT DISTINCT !vars
+FROM <#ri>
+WHERE {
+!statements .
+}
+EOQ;
+
+  $query_statements = module_invoke_all('islandora_basic_collection_get_query_statements', $type);
+  $query = format_string($query, array(
+    '!statements' => implode(' . ', $query_statements),
+    '!vars' => $params['vars'],
+  ));
+  $query = format_string($query, array(
+    '!pid' => $object->id,
+    '!model' => $params['model'],
+  ));
+
+  if ($params['order_by']) {
+    $query .= <<<EOQO
+ORDER BY {$params['order_by']}
+EOQO;
+  }
+
+  $query_array = $params + array(
+    'query' => $query,
+    'type' => 'sparql',
+    'pid' => $object->id,
+  );
+  return $query_array;
+}
