@@ -179,3 +179,32 @@ EOQO;
   );
   return $query_array;
 }
+
+/**
+ * Implements hook_islandora_oai_get_xsl_files().
+ */
+function metrodora_islandora_oai_get_xsl_files() {
+  $files = file_scan_directory(drupal_get_path('module', 'metrodora') . '/transforms/', '/.*\.xslt?$/');
+
+  $transform_options = array();
+
+  foreach ($files as $file) {
+    $transform_options[$file->uri] = $file->filename;
+  }
+
+  return $transform_options;
+}
+
+/**
+ * Implements hook_islandora_oai_self_transform_params().
+ */
+function metrodora_islandora_oai_self_transform_params($islandora_object, $metadata_prefix) {
+  $url = url("islandora/object/{$islandora_object->id}", array(
+    'absolute' => TRUE,
+    'language' => NULL,
+  ));
+
+  return array(
+    'resource_url' => $url
+  );
+}
