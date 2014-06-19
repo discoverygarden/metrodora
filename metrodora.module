@@ -205,6 +205,6 @@ function metrodora_islandora_oai_self_transform_params($islandora_object, $metad
   ));
 
   return array(
-    'resource_url' => $url
+    '' => array('resource_url' => $url),
   );
 }
