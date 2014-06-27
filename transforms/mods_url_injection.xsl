@@ -7,9 +7,7 @@
     <xsl:template match="node()">
         <xsl:copy>
             <xsl:copy-of select="@* | *"/>
-            <mods:location>
-                <mods:url><xsl:value-of select="$resource_url"/></mods:url>
-            </mods:location>
+            <identifier type="uri"><xsl:value-of select="$resource_url"/></identifier>
         </xsl:copy>
     </xsl:template>
 </xsl:stylesheet>
