@@ -208,3 +208,191 @@ function metrodora_islandora_oai_self_transform_params($islandora_object, $metad
     '' => array('resource_url' => $url),
   );
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function metrodora_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'xml_form_builder_preview' && $form_id == 'xml_form_builder_edit_datastream_form' || $form_id == 'xml_form_builder_ingest_form' && isset($form['#title']) && $form['#title'] == 'METRO MODS Form') {
+    module_load_include('inc', 'islandora', 'includes/utilities');
+    $elements_to_enable = array(
+      'murrayhill' => array(
+        &$form['subject']['hierarchicalGeographicFieldset'],
+        &$form['subject']['hierarchicalGeographicFieldset']['citySection'],
+        &$form['subject']['cartographicsFieldset'],
+        &$form['subject']['cartographicsFieldset']['coordinates'],
+      ),
+      'zoomaps' => array(
+        &$form['subject']['cartographicsFieldset'],
+        &$form['subject']['cartographicsFieldset']['scale'],
+      ),
+      'bronxpark' => array(
+        &$form['relatedItemFieldset']['relatedSeries'],
+      ),
+      'albadigitallibrary' => array(
+        &$form['relatedItemFieldset']['relatedNote'],
+        &$form['relatedItemFieldset']['relatedSource'],
+      ),
+      'bklynsheetmusic' => array(
+        &$form['relatedItemFieldset']['relatedResource'],
+      ),
+      'cuny34thstreet' => array(
+        &$form['relatedItemFieldset']['appearsIn'],
+      ),
+      'snugharbor' => array(
+        &$form['relatedItemFieldset']['appearsIn'],
+      ),
+      'lesbianherstory' => array(),
+      'bronxchildhood' => array(
+        &$form['relatedItemFieldset']['relatedExhibit'],
+      ),
+    );
+    // Get all repeatable elements that are tab panels that need to be
+    // modified.
+    $display_label = metrodora_build_repeatable_element_array($form['notes'], 'displayLabel');
+    if (!empty($display_label)) {
+      $elements_to_enable['cuny34thstreet'] = array_merge($elements_to_enable['cuny34thstreet'], $display_label);
+      $elements_to_enable['snugharbor'] = array_merge($elements_to_enable['snugharbor'], $display_label);
+    }
+    $type = metrodora_build_repeatable_element_array($form['description'], 'type');
+    if (!empty($type)) {
+      $elements_to_enable['lesbianherstory'] = array_merge($elements_to_enable['lesbianherstory'], $type);
+    }
+    $name = metrodora_build_repeatable_element_array($form['name'], 'authority');
+    if (!empty($name)) {
+      $elements_to_enable['bronxchildhood'] = array_merge($elements_to_enable['bronxchildhood'], $name);
+    }
+
+    if ($form_id === 'xml_form_builder_ingest_form') {
+      module_load_include('inc', 'islandora', 'includes/ingest.form');
+      $shared_storage = islandora_ingest_form_get_shared_storage($form_state);
+      $object = $shared_storage['parent'];
+      $namespace = islandora_get_namespace($object);
+      metrodora_modify_namespace_specific_fields($form, $elements_to_enable, $namespace);
+    }
+    else {
+      // Check if "update" is set so we only modify the second step on editing
+      // a MODS form.
+      if (isset($form['update'])) {
+        $object = menu_get_object('islandora_object', 2);
+        if ($object) {
+          $namespace = islandora_get_namespace($object);
+          metrodora_modify_namespace_specific_fields($form, $elements_to_enable, $namespace);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Build up elements to enable for repeatable fields like Tags and Tabs.
+ *
+ * @param array $form
+ *   An array representing a form within Drupal.
+ * @param bool|string $field_key
+ *   FALSE if the form itself is being iterated on, a string representation of
+ *   the field otherwise.
+ *
+ * @return array
+ *   An array containing references to form elements to be enabled.
+ */
+function metrodora_build_repeatable_element_array(&$form, $field_key = FALSE) {
+  $elements = array();
+
+  foreach ($form as $key => $values) {
+    if (is_array($values)) {
+      if ($field_key) {
+        $elements[] = &$form[$key][$field_key];
+      }
+      else {
+        $elements[] = &$form[$key];
+      }
+    }
+  }
+  return $elements;
+}
+
+/**
+ * Modifies fields specific to namespaces for METRO's MODS form.
+ *
+ * @param array $form
+ *   An array representing a form within Drupal.
+ * @param array $elements_to_enable
+ *   An array containing references to form elements to be enabled
+ * @param string $namespace
+ *   A string holding the namespace of the collection being ingested into.
+ */
+function metrodora_modify_namespace_specific_fields(&$form, &$elements_to_enable, $namespace) {
+  if (isset($elements_to_enable[$namespace])) {
+    foreach ($elements_to_enable[$namespace] as &$element) {
+      $element['#access'] = TRUE;
+    }
+  }
+  // Handle collection specific options adding of options.
+  if ($namespace == 'murrayhill') {
+    $notes = metrodora_build_repeatable_element_array($form['notes']);
+    foreach ($notes as &$element) {
+      $element['type']['#options']['provenance'] = t('Provenance');
+    }
+    unset($element);
+  }
+  elseif ($namespace == 'waterways') {
+    $notes = metrodora_build_repeatable_element_array($form['notes']);
+    foreach ($notes as &$element) {
+      $element['type']['#options']['publishinginfo'] = t('Publishing Info');
+    }
+    unset($element);
+  }
+}
+
+/**
+ * Implements hook_islandora_xml_form_builder_forms().
+ */
+function metrodora_islandora_xml_form_builder_forms() {
+  $module_path = drupal_get_path('module', 'metrodora');
+  return array(
+    'METRO MODS Form' => array(
+      'form_file' => "$module_path/xml/metro_mods_form.xml",
+    ),
+  );
+}
+
+/**
+ * Implements hook_islandora_xml_form_builder_form_associations().
+ */
+function metrodora_islandora_xml_form_builder_form_associations() {
+  return array(
+    'metro_compound_mods_form' => array(
+      'content_model' => 'islandora:compoundCModel',
+      'form_name' => 'METRO MODS Form',
+      'dsid' => 'MODS',
+      'title_field' => array('titleInfo', 'title'),
+      'transform' => 'mods_to_dc.xsl',
+      'template' => FALSE,
+    ),
+    'metro_image_mods_form' => array(
+      'content_model' => 'islandora:sp_basic_image',
+      'form_name' => 'METRO MODS Form',
+      'dsid' => 'MODS',
+      'title_field' => array('titleInfo', 'title'),
+      'transform' => 'mods_to_dc.xsl',
+      'template' => FALSE,
+    ),
+    'metro_large_image_mods_form' => array(
+      'content_model' => 'islandora:sp_large_image_cmodel',
+      'form_name' => 'METRO MODS Form',
+      'dsid' => 'MODS',
+      'title_field' => array('titleInfo', 'title'),
+      'transform' => 'mods_to_dc.xsl',
+      'template' => FALSE,
+    ),
+    'metro_pdf_mods_form' => array(
+      'content_model' => 'islandora:sp_pdf',
+      'form_name' => 'METRO MODS Form',
+      'dsid' => 'MODS',
+      'title_field' => array('titleInfo', 'title'),
+      'transform' => 'mods_to_dc.xsl',
+      'template' => FALSE,
+    ),
+  );
+}
