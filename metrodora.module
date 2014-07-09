@@ -213,7 +213,7 @@ function metrodora_islandora_oai_self_transform_params($islandora_object, $metad
  * Implements hook_form_alter().
  */
 function metrodora_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'xml_form_builder_preview' && $form_id == 'xml_form_builder_edit_datastream_form' || $form_id == 'xml_form_builder_ingest_form' && isset($form['#title']) && $form['#title'] == 'METRO MODS Form') {
+  if ($form_id == 'xml_form_builder_edit_datastream_form' || $form_id == 'xml_form_builder_ingest_form' && isset($form['#title']) && $form['#title'] == 'METRO MODS Form') {
     module_load_include('inc', 'islandora', 'includes/utilities');
     $elements_to_enable = array(
       'murrayhill' => array(
@@ -299,14 +299,12 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
 function metrodora_build_repeatable_element_array(&$form, $field_key = FALSE) {
   $elements = array();
 
-  foreach ($form as $key => $values) {
-    if (is_array($values)) {
-      if ($field_key) {
-        $elements[] = &$form[$key][$field_key];
-      }
-      else {
-        $elements[] = &$form[$key];
-      }
+  foreach (element_children($form) as $key) {
+    if ($field_key) {
+      $elements[] = &$form[$key][$field_key];
+    }
+    else {
+      $elements[] = &$form[$key];
     }
   }
   return $elements;
