@@ -355,38 +355,23 @@ function metrodora_islandora_xml_form_builder_forms() {
  * Implements hook_islandora_xml_form_builder_form_associations().
  */
 function metrodora_islandora_xml_form_builder_form_associations() {
-  return array(
-    'metro_compound_mods_form' => array(
-      'content_model' => 'islandora:compoundCModel',
-      'form_name' => 'METRO MODS Form',
-      'dsid' => 'MODS',
-      'title_field' => array('titleInfo', 'title'),
-      'transform' => 'mods_to_dc.xsl',
-      'template' => FALSE,
-    ),
-    'metro_image_mods_form' => array(
-      'content_model' => 'islandora:sp_basic_image',
-      'form_name' => 'METRO MODS Form',
-      'dsid' => 'MODS',
-      'title_field' => array('titleInfo', 'title'),
-      'transform' => 'mods_to_dc.xsl',
-      'template' => FALSE,
-    ),
-    'metro_large_image_mods_form' => array(
-      'content_model' => 'islandora:sp_large_image_cmodel',
-      'form_name' => 'METRO MODS Form',
-      'dsid' => 'MODS',
-      'title_field' => array('titleInfo', 'title'),
-      'transform' => 'mods_to_dc.xsl',
-      'template' => FALSE,
-    ),
-    'metro_pdf_mods_form' => array(
-      'content_model' => 'islandora:sp_pdf',
-      'form_name' => 'METRO MODS Form',
-      'dsid' => 'MODS',
-      'title_field' => array('titleInfo', 'title'),
-      'transform' => 'mods_to_dc.xsl',
-      'template' => FALSE,
-    ),
+  $to_return = array();
+  $base_array = array(
+    'form name' => 'METRO MODS Form',
+    'dsid' => 'MODS',
+    'title_field' => array('titleInfo', '0', 'title'),
+    'transform' => 'mods_to_dc.xsl',
+    'template' => FALSE,
   );
+
+  $associations = array(
+    'metro_compound_mods_form' => 'islandora:compoundCModel',
+    'metro_image_mods_form' => 'islandora:sp_basic_image',
+    'metro_large_image_mods_form' => 'islandora:sp_large_image_cmodel',
+    'metro_pdf_mods_form' => 'islandora:sp_pdf',
+  );
+  foreach ($associations as $key => $content_model) {
+    $to_return[$key] = $base_array + array('content_model' => $content_model);
+  }
+  return $to_return;
 }
