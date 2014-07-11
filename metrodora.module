@@ -258,10 +258,6 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
     if (!empty($type)) {
       $elements_to_enable['lesbianherstory'] = array_merge($elements_to_enable['lesbianherstory'], $type);
     }
-    $name = metrodora_build_repeatable_element_array($form['name'], 'authority');
-    if (!empty($name)) {
-      $elements_to_enable['bronxchildhood'] = array_merge($elements_to_enable['bronxchildhood'], $name);
-    }
 
     if ($form_id === 'xml_form_builder_ingest_form') {
       module_load_include('inc', 'islandora', 'includes/ingest.form');
