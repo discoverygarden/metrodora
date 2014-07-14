@@ -319,7 +319,6 @@ function metrodora_islandora_xml_form_builder_form_associations() {
     'form_name' => 'METRO MODS Form',
     'dsid' => 'MODS',
     'title_field' => array('titleInfo', '0', 'title'),
-    'transform' => 'mods_to_dc.xsl',
     'template' => FALSE,
   );
 
