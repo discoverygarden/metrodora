@@ -333,10 +333,7 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
  */
 function metrodora_compound_parent_metadata_access(AbstractObject $object) {
   $compound_info = islandora_compound_object_retrieve_compound_info($object);
-  if ($compound_info || in_array('islandora:compoundCModel', $object->models)) {
-    return TRUE;
-  }
-  return FALSE;
+  return $compound_info || in_array('islandora:compoundCModel', $object->models);
 }
 
 /**
@@ -352,11 +349,7 @@ function metrodora_compound_child_metadata_access(AbstractObject $object) {
   $children = islandora_compound_object_get_parts($object);
   $pid = (!empty($children)) ? $children[0] : $object->id;
   $compound_object = islandora_object_load($pid);
-  $compound_info = islandora_compound_object_retrieve_compound_info($compound_object);
-  if ($compound_info) {
-    return TRUE;
-  }
-  return FALSE;
+  return islandora_compound_object_retrieve_compound_info($compound_object);
 }
 
 /**
