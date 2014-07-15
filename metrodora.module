@@ -210,6 +210,44 @@ function metrodora_islandora_oai_self_transform_params($islandora_object, $metad
 }
 
 /**
+ * Implements hook_menu().
+ */
+function metrodora_menu() {
+  $items = array();
+  $items['islandora/object/%islandora_object/compound-parent-metadata'] = array(
+    'title' => 'Object Description',
+    'page callback' => 'metrodora_compound_parent_metadata',
+    'page arguments' => array(2),
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => 'metrodora_compound_parent_metadata_access',
+    'access arguments' => array(2),
+    'file' => 'includes/metadata.inc',
+    'weight' => 1,
+  );
+  $items['islandora/object/%islandora_object/compound-child-metadata'] = array(
+    'title' => 'Item Description',
+    'page callback' => 'metrodora_compound_child_metadata',
+    'page arguments' => array(2),
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => 'metrodora_compound_child_metadata_access',
+    'access arguments' => array(2),
+    'file' => 'includes/metadata.inc',
+    'weight' => 2,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function metrodora_menu_alter(&$items) {
+  $items['islandora/object/%islandora_object/manage']['weight'] = 4;
+  if (isset($items['islandora/object/%islandora_object/ip_embargo'])) {
+    $items['islandora/object/%islandora_object/ip_embargo']['weight'] = 3;
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function metrodora_form_alter(&$form, &$form_state, $form_id) {
@@ -237,6 +275,46 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
       }
     }
   }
+}
+
+/**
+ * Access callback for viewing parent metadata tab.
+ *
+ * @param AbstractObject $object
+ *   An AbstractObject representing a Fedora object.
+ *
+ * @return bool
+ *   TRUE if the user can see the tab, FALSE otherwise.
+ */
+function metrodora_compound_parent_metadata_access(AbstractObject $object) {
+  $compound_info = islandora_compound_object_retrieve_compound_info($object);
+  return $compound_info || in_array('islandora:compoundCModel', $object->models);
+}
+
+/**
+ * Access callback for viewing parent metadata tab.
+ *
+ * @param AbstractObject $object
+ *   An AbstractObject representing a Fedora object.
+ *
+ * @return bool
+ *   TRUE if the user can see the tab, FALSE otherwise.
+ */
+function metrodora_compound_child_metadata_access(AbstractObject $object) {
+  $children = islandora_compound_object_get_parts($object);
+  $pid = (!empty($children)) ? $children[0] : $object->id;
+  $compound_object = islandora_object_load($pid);
+  return islandora_compound_object_retrieve_compound_info($compound_object);
+}
+
+/**
+ * Implements hook_islandora_compound_object_management_control_paths().
+ */
+function metrodora_islandora_compound_object_management_control_paths() {
+  return array(
+    'islandora/object/%/compound-parent-metadata',
+    'islandora/object/%/compound-child-metadata',
+  );
 }
 
 /**

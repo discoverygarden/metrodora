@@ -3,5 +3,6 @@ description = "Custom Islandora functionality for Metro"
 package = Islandora
 dependencies[] = islandora
 dependencies[] = islandora_basic_collection
+dependencies[] = islandora_compound_object
 core = 7.x
 php = 5.3
