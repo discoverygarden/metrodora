@@ -334,8 +334,7 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
 function metrodora_compound_parent_metadata_access(AbstractObject $object) {
   $compound_info = islandora_compound_object_retrieve_compound_info($object);
   if ($compound_info || in_array('islandora:compoundCModel', $object->models)) {
-    $config_exists = islandora_solr_metadata_display_callback($object);
-    return $config_exists;
+    return TRUE;
   }
   return FALSE;
 }
@@ -355,8 +354,7 @@ function metrodora_compound_child_metadata_access(AbstractObject $object) {
   $compound_object = islandora_object_load($pid);
   $compound_info = islandora_compound_object_retrieve_compound_info($compound_object);
   if ($compound_info) {
-    $config_exists = islandora_solr_metadata_display_callback($compound_object);
-    return $config_exists;
+    return TRUE;
   }
   return FALSE;
 }
