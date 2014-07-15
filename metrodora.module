@@ -259,7 +259,7 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
       $shared_storage = islandora_ingest_form_get_shared_storage($form_state);
       $object = $shared_storage['parent'];
       $namespace = islandora_get_namespace($object);
-      metrodora_build_variable_elements_array($form);
+      $elements_to_enable = metrodora_build_variable_elements_array($form);
       metrodora_modify_namespace_specific_fields($form, $elements_to_enable, $namespace);
     }
     else {
@@ -269,7 +269,7 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
         $object = menu_get_object('islandora_object', 2);
         if ($object) {
           $namespace = islandora_get_namespace($object);
-          metrodora_build_variable_elements_array($form);
+          $elements_to_enable = metrodora_build_variable_elements_array($form);
           metrodora_modify_namespace_specific_fields($form, $elements_to_enable, $namespace);
         }
       }
