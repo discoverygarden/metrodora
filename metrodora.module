@@ -475,12 +475,12 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
     $markup = new DOMDocument('1.0', 'utf-8');
     $markup->loadHTML($rendered['']['#markup']);
     $xpath = new DOMXpath($markup);
-    $result = $xpath->query('//fieldset[@class="islandora islandora-metadata collapsible collapsed"]');
+    $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
     // Should only be one of these.
     $parent_node = FALSE;
-    foreach ($result as $yum) {
-      $parent_node = $yum->parentNode;
-      $parent_node->removeChild($yum);
+    foreach ($result as $element) {
+      $parent_node = $element->parentNode;
+      $parent_node->removeChild($element);
       break;
     }
     if ($parent_node) {
