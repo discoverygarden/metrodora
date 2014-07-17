@@ -292,7 +292,7 @@ function metrodora_compound_parent_metadata_access(AbstractObject $object) {
 }
 
 /**
- * Access callback for viewing parent metadata tab.
+ * Access callback for viewing child metadata tab.
  *
  * @param AbstractObject $object
  *   An AbstractObject representing a Fedora object.
@@ -305,16 +305,6 @@ function metrodora_compound_child_metadata_access(AbstractObject $object) {
   $pid = (!empty($children)) ? $children[0] : $object->id;
   $compound_object = islandora_object_load($pid);
   return islandora_compound_object_retrieve_compound_info($compound_object);
-}
-
-/**
- * Implements hook_islandora_compound_object_management_control_paths().
- */
-function metrodora_islandora_compound_object_management_control_paths() {
-  return array(
-    'islandora/object/%/compound-parent-metadata',
-    'islandora/object/%/compound-child-metadata',
-  );
 }
 
 /**
@@ -474,4 +464,27 @@ function metrodora_build_variable_elements_array(&$form) {
     $elements_to_enable['lesbianherstory'] = array_merge($elements_to_enable['lesbianherstory'], $type);
   }
   return $elements_to_enable;
+}
+
+/**
+ * Implements hook_CMODEL_pid_islandora_view_object_alter().
+ */
+function metrodora_islandora_view_object_alter(&$object, &$rendered) {
+  if (metrodora_compound_child_metadata_access($object)) {
+    // We'll assume that the empty string is the solution pack markup.
+    $markup = new DOMDocument('1.0', 'utf-8');
+    $markup->loadHTML($rendered['']['#markup']);
+    $xpath = new DOMXpath($markup);
+    $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
+    // Should only be one of these.
+    $parent_node = FALSE;
+    foreach ($result as $element) {
+      $parent_node = $element->parentNode;
+      $parent_node->removeChild($element);
+      break;
+    }
+    if ($parent_node) {
+      $rendered['']['#markup'] = $parent_node->ownerDocument->saveHTML();
+    }
+  }
 }
