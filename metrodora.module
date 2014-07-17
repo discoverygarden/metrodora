@@ -467,7 +467,7 @@ function metrodora_build_variable_elements_array(&$form) {
 }
 
 /**
- * Implemenets hook_CMODEL_pid_islandora_view_object_alter().
+ * Implements hook_CMODEL_pid_islandora_view_object_alter().
  */
 function metrodora_islandora_view_object_alter(&$object, &$rendered) {
   if (metrodora_compound_child_metadata_access($object)) {
