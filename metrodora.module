@@ -442,14 +442,8 @@ function metrodora_build_variable_elements_array(&$form) {
       &$form['relatedItemFieldset']['appearsIn'],
     ),
     'lesbianherstory' => array(),
-    'bronxchildhood' => array(
-      &$form['relatedItemFieldset']['relatedExhibit'],
-    ),
     'childhoodinbronx' => array(
       &$form['relatedItemFieldset']['relatedExhibit'],
-    ),
-    'bronxpark' => array(
-      &$form['relatedItemFieldset']['relatedSeries'],
     ),
   );
   // Get all repeatable elements that are tab panels that need to be
