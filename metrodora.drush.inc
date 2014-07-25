@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Drush command/hook implementation for updating existing citation objects.
+ * Drush command/hook implementation for updating existing DC records.
  */
 
 /**
@@ -32,7 +32,7 @@ function metrodora_drush_command() {
 }
 
 /**
- * Command callback to update citations with PDF derivatives.
+ * Command callback to update DC records.
  */
 function drush_metrodora_update_dc() {
   batch_set(metrodora_update_dc_create_batch());
@@ -56,7 +56,7 @@ function metrodora_update_dc_create_batch() {
 }
 
 /**
- * Constructs and performs the citation batch operation.
+ * Constructs and performs the DC records batch operation.
  *
  * @param long $time
  *   The time to be used to query against.
