@@ -251,7 +251,7 @@ function metrodora_menu_alter(&$items) {
  * Implements hook_form_alter().
  */
 function metrodora_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'xml_form_builder_datastream_form' || $form_id == 'xml_form_builder_ingest_form' && isset($form['#title']) && $form['#title'] == 'METRO MODS Form') {
+  if ($form_id == 'xml_form_builder_edit_datastream_form' || $form_id == 'xml_form_builder_ingest_form' && isset($form['#title']) && $form['#title'] == 'METRO MODS Form') {
     module_load_include('inc', 'islandora', 'includes/utilities');
 
     if ($form_id === 'xml_form_builder_ingest_form') {
