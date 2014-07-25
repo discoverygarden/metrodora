@@ -19,7 +19,7 @@ function metrodora_drush_command() {
     ),
     'options' => array(
       'time' => array(
-        'description' => 'The timestamp to be used to query against. Can use date +%s on the command line to get the current time.',
+        'description' => dt('The timestamp to be used to query against. Can use date +%s on the command line to get the current time.'),
         'required' => TRUE,
       ),
     ),
@@ -47,10 +47,10 @@ function metrodora_update_dc_create_batch() {
     'operations' => array(
       array('metrodora_update_dc_batch_operation', array(drush_get_option('time'))),
     ),
-    'title' => t('Updating Dublin Core records for objects...'),
-    'init_message' => t('Preparing to update Dublin Core.'),
-    'progress_message' => t('Time elapsed: @elapsed <br/>Estimated time remaining @estimate.'),
-    'error_message' => t('An error has occurred.'),
+    'title' => dt('Updating Dublin Core records for objects...'),
+    'init_message' => dt('Preparing to update Dublin Core.'),
+    'progress_message' => dt('Time elapsed: @elapsed <br/>Estimated time remaining @estimate.'),
+    'error_message' => dt('An error has occurred.'),
     'file' => drupal_get_path('module', 'metrodora') . '/metrodora.drush.inc',
   );
 }
@@ -86,7 +86,7 @@ EOQ;
     }
   }
 
-  $context['message'] = t('Processing results @start to @end.', array(
+  $context['message'] = dt('Processing results @start to @end.', array(
     '@start' => $sandbox['offset'],
     '@end' => min($sandbox['offset'] + $update, $sandbox['total']),
   ));
