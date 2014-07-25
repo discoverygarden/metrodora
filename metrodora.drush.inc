@@ -66,7 +66,6 @@ function metrodora_update_dc_create_batch() {
 function metrodora_update_dc_batch_operation($time, &$context) {
   $update = 10;
   $now = gmdate("Y-m-d\TH:i:s\Z", $time);
-  drush_log($time);
   $query = <<<EOQ
 SELECT ?pid FROM <#ri>
 WHERE {
@@ -76,9 +75,7 @@ WHERE {
   FILTER(?lmd < '$now'^^xsd:dateTime)
 }
 EOQ;
-  drush_log($query);
   $connection = islandora_get_tuque_connection();
-
   $sandbox = &$context['sandbox'];
   if (!isset($sandbox['offset'])) {
     $sparql_count = $connection->repository->ri->countQuery($query, 'sparql');
@@ -99,7 +96,7 @@ EOQ;
   ";
   module_load_include('inc', 'islandora', 'includes/derivatives');
   $results = $connection->repository->ri->sparqlQuery($query);
-  if (!empty($results)) {
+  if (empty($results)) {
     $context['finished'] = 1;
   }
   foreach ($results as $result) {
