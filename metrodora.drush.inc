@@ -64,6 +64,7 @@ function metrodora_update_dc_create_batch() {
  *   The context of the Drupal batch.
  */
 function metrodora_update_dc_batch_operation($time, &$context) {
+  $context['finished'] = 0;
   $update = 10;
   $now = gmdate("Y-m-d\TH:i:s\Z", $time);
   $query = <<<EOQ
