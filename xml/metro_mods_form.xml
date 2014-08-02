@@ -1103,6 +1103,7 @@
                             <executes_submit_callback>FALSE</executes_submit_callback>
                             <multiple>FALSE</multiple>
                             <options>
+                                <none>none</none>
                                 <index key="reformatted digital">reformatted digital</index>
                                 <index key="born digital">born digital</index>
                             </options>
@@ -1144,6 +1145,7 @@
                             <executes_submit_callback>FALSE</executes_submit_callback>
                             <multiple>FALSE</multiple>
                             <options>
+                                <none>none</none>
                                 <index key="image/jpeg">image/jpeg</index>
                                 <index key="image/jp2">image/jp2</index>
                                 <index key="image/tiff">image/tiff</index>
@@ -1525,22 +1527,6 @@
                     <resizable>FALSE</resizable>
                     <title>Subject</title>
                     <tree>TRUE</tree>
-                    <actions>
-                        <create>
-                            <path>self::node()</path>
-                            <context>parent</context>
-                            <schema/>
-                            <type>element</type>
-                            <prefix>NULL</prefix>
-                            <value>subject</value>
-                        </create>
-                        <read>
-                            <path>mods:subject</path>
-                            <context>parent</context>
-                        </read>
-                        <update>NULL</update>
-                        <delete>NULL</delete>
-                    </actions>
                 </properties>
                 <children>
                     <element name="topicalSubject">
@@ -1577,10 +1563,10 @@
                                             <schema/>
                                             <type>element</type>
                                             <prefix>NULL</prefix>
-                                            <value>topic</value>
+                                            <value>subject</value>
                                         </create>
                                         <read>
-                                            <path>mods:topic</path>
+                                            <path>mods:subject</path>
                                             <context>parent</context>
                                         </read>
                                         <update>NULL</update>
@@ -1624,8 +1610,8 @@
                                                     <context>parent</context>
                                                 </read>
                                                 <update>
-                                                    <path>self::node()</path>
-                                                    <context>self</context>
+                                                    <path>@authority</path>
+                                                    <context>parent</context>
                                                 </update>
                                                 <delete>NULL</delete>
                                             </actions>
@@ -1646,13 +1632,20 @@
                                             <title>Topic</title>
                                             <tree>TRUE</tree>
                                             <actions>
-                                                <create>NULL</create>
-                                                <read>
+                                                <create>
                                                     <path>self::node()</path>
+                                                    <context>parent</context>
+                                                    <schema/>
+                                                    <type>element</type>
+                                                    <prefix>NULL</prefix>
+                                                    <value>topic</value>
+                                                </create>
+                                                <read>
+                                                    <path>mods:topic</path>
                                                     <context>parent</context>
                                                 </read>
                                                 <update>
-                                                    <path>self::node()</path>
+                                                    <path>mods:topic</path>
                                                     <context>parent</context>
                                                 </update>
                                                 <delete>NULL</delete>
