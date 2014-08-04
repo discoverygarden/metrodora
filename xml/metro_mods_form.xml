@@ -1103,8 +1103,9 @@
                             <executes_submit_callback>FALSE</executes_submit_callback>
                             <multiple>FALSE</multiple>
                             <options>
-                                <index key="reformatted digital">reformatted digital</index>
                                 <index key="born digital">born digital</index>
+                                <none>none</none>
+                                <index key="reformatted digital">reformatted digital</index>
                             </options>
                             <required>FALSE</required>
                             <resizable>FALSE</resizable>
@@ -1144,10 +1145,11 @@
                             <executes_submit_callback>FALSE</executes_submit_callback>
                             <multiple>FALSE</multiple>
                             <options>
-                                <index key="image/jpeg">image/jpeg</index>
-                                <index key="image/jp2">image/jp2</index>
-                                <index key="image/tiff">image/tiff</index>
+                                <none>none</none>
                                 <index key="application/pdf">application/pdf</index>
+                                <index key="image/jp2">image/jp2</index>
+                                <index key="image/jpeg">image/jpeg</index>
+                                <index key="image/tiff">image/tiff</index>
                             </options>
                             <required>FALSE</required>
                             <resizable>FALSE</resizable>

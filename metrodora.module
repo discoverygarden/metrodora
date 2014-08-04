@@ -431,6 +431,7 @@ function metrodora_build_variable_elements_array(&$form) {
     'albadigitallibrary' => array(
       &$form['relatedItemFieldset']['relatedNote'],
       &$form['relatedItemFieldset']['relatedSource'],
+      &$form['relatedItemFieldset']['relatedResource'],
     ),
     'bklynsheetmusic' => array(
       &$form['relatedItemFieldset']['relatedResource'],
