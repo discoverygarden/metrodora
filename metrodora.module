@@ -483,3 +483,13 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
     }
   }
 }
+
+/**
+ * Implements hook_islandora_compound_object_management_control_paths().
+ */
+function metrodora_islandora_compound_object_management_control_paths() {
+  return array(
+    'islandora/object/%/compound-parent-metadata',
+    'islandora/object/%/compound-child-metadata',
+  );
+}
