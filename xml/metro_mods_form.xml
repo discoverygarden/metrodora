@@ -1514,9 +1514,9 @@
                     </element>
                 </children>
             </element>
-            <element name="subject">
+            <element name="subjects">
                 <properties>
-                    <type>fieldset</type>
+                    <type>tabs</type>
                     <access>TRUE</access>
                     <collapsed>FALSE</collapsed>
                     <collapsible>FALSE</collapsible>
@@ -1525,29 +1525,13 @@
                     <multiple>FALSE</multiple>
                     <required>FALSE</required>
                     <resizable>FALSE</resizable>
-                    <title>Subject</title>
+                    <title>Subject(s)</title>
                     <tree>TRUE</tree>
-                    <actions>
-                        <create>
-                            <path>self::node()</path>
-                            <context>parent</context>
-                            <schema/>
-                            <type>element</type>
-                            <prefix>NULL</prefix>
-                            <value>subject</value>
-                        </create>
-                        <read>
-                            <path>mods:subject</path>
-                            <context>parent</context>
-                        </read>
-                        <update>NULL</update>
-                        <delete>NULL</delete>
-                    </actions>
                 </properties>
                 <children>
-                    <element name="topicalSubject">
+                    <element name="0">
                         <properties>
-                            <type>tabs</type>
+                            <type>tabpanel</type>
                             <access>TRUE</access>
                             <collapsed>FALSE</collapsed>
                             <collapsible>FALSE</collapsible>
@@ -1556,13 +1540,31 @@
                             <multiple>FALSE</multiple>
                             <required>FALSE</required>
                             <resizable>FALSE</resizable>
-                            <title>Topical Subject</title>
                             <tree>TRUE</tree>
+                            <actions>
+                                <create>
+                                    <path>self::node()</path>
+                                    <context>parent</context>
+                                    <schema/>
+                                    <type>element</type>
+                                    <prefix>NULL</prefix>
+                                    <value>subject</value>
+                                </create>
+                                <read>
+                                    <path>mods:subject</path>
+                                    <context>parent</context>
+                                </read>
+                                <update>NULL</update>
+                                <delete>
+                                    <path>self::node()</path>
+                                    <context>self</context>
+                                </delete>
+                            </actions>
                         </properties>
                         <children>
-                            <element name="0">
+                            <element name="topic">
                                 <properties>
-                                    <type>tabpanel</type>
+                                    <type>fieldset</type>
                                     <access>TRUE</access>
                                     <collapsed>FALSE</collapsed>
                                     <collapsible>FALSE</collapsible>
@@ -1571,6 +1573,7 @@
                                     <multiple>FALSE</multiple>
                                     <required>FALSE</required>
                                     <resizable>FALSE</resizable>
+                                    <title>Topic</title>
                                     <tree>TRUE</tree>
                                     <actions>
                                         <create>
@@ -1585,11 +1588,11 @@
                                             <path>mods:topic</path>
                                             <context>parent</context>
                                         </read>
-                                        <update>NULL</update>
-                                        <delete>
+                                        <update>
                                             <path>self::node()</path>
                                             <context>self</context>
-                                        </delete>
+                                        </update>
+                                        <delete>NULL</delete>
                                     </actions>
                                 </properties>
                                 <children>
@@ -1622,7 +1625,7 @@
                                                     <value>authority</value>
                                                 </create>
                                                 <read>
-                                                    <path>@authority</path>
+                                                    <path>@authority | self::node()/../@authority</path>
                                                     <context>parent</context>
                                                 </read>
                                                 <update>
@@ -1645,7 +1648,6 @@
                                             <multiple>FALSE</multiple>
                                             <required>FALSE</required>
                                             <resizable>FALSE</resizable>
-                                            <title>Topic</title>
                                             <tree>TRUE</tree>
                                             <actions>
                                                 <create>NULL</create>
@@ -1664,26 +1666,9 @@
                                     </element>
                                 </children>
                             </element>
-                        </children>
-                    </element>
-                    <element name="geographicSubjectFieldset">
-                        <properties>
-                            <type>fieldset</type>
-                            <access>TRUE</access>
-                            <collapsed>FALSE</collapsed>
-                            <collapsible>FALSE</collapsible>
-                            <disabled>FALSE</disabled>
-                            <executes_submit_callback>FALSE</executes_submit_callback>
-                            <multiple>FALSE</multiple>
-                            <required>FALSE</required>
-                            <resizable>FALSE</resizable>
-                            <title>Geographic Subject</title>
-                            <tree>TRUE</tree>
-                        </properties>
-                        <children>
-                            <element name="geographicSubject">
+                            <element name="geographic">
                                 <properties>
-                                    <type>tabs</type>
+                                    <type>fieldset</type>
                                     <access>TRUE</access>
                                     <collapsed>FALSE</collapsed>
                                     <collapsible>FALSE</collapsible>
@@ -1694,11 +1679,70 @@
                                     <resizable>FALSE</resizable>
                                     <title>Geographic Subject</title>
                                     <tree>TRUE</tree>
+                                    <actions>
+                                        <create>
+                                            <path>self::node()</path>
+                                            <context>parent</context>
+                                            <schema/>
+                                            <type>element</type>
+                                            <prefix>NULL</prefix>
+                                            <value>geographic</value>
+                                        </create>
+                                        <read>
+                                            <path>mods:geographic</path>
+                                            <context>parent</context>
+                                        </read>
+                                        <update>
+                                            <path>self::node()</path>
+                                            <context>self</context>
+                                        </update>
+                                        <delete>NULL</delete>
+                                    </actions>
                                 </properties>
                                 <children>
-                                    <element name="0">
+                                    <element name="authority">
                                         <properties>
-                                            <type>tabpanel</type>
+                                            <type>select</type>
+                                            <access>TRUE</access>
+                                            <collapsed>FALSE</collapsed>
+                                            <collapsible>FALSE</collapsible>
+                                            <default_value>none</default_value>
+                                            <disabled>FALSE</disabled>
+                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                            <multiple>FALSE</multiple>
+                                            <options>
+                                                <none>None</none>
+                                                <lcsh>Lcsh</lcsh>
+                                            </options>
+                                            <required>FALSE</required>
+                                            <resizable>FALSE</resizable>
+                                            <title>Authority</title>
+                                            <tree>TRUE</tree>
+                                            <actions>
+                                                <create>
+                                                    <path>self::node()</path>
+                                                    <context>parent</context>
+                                                    <schema/>
+                                                    <type>attribute</type>
+                                                    <prefix>NULL</prefix>
+                                                    <value>authority</value>
+                                                </create>
+                                                <read>
+                                                    <path>@authority</path>
+                                                    <context>parent</context>
+                                                </read>
+                                                <update>
+                                                    <path>self::node()</path>
+                                                    <context>self</context>
+                                                </update>
+                                                <delete>NULL</delete>
+                                            </actions>
+                                        </properties>
+                                        <children/>
+                                    </element>
+                                    <element name="geographic">
+                                        <properties>
+                                            <type>textfield</type>
                                             <access>TRUE</access>
                                             <collapsed>FALSE</collapsed>
                                             <collapsible>FALSE</collapsible>
@@ -1709,292 +1753,131 @@
                                             <resizable>FALSE</resizable>
                                             <tree>TRUE</tree>
                                             <actions>
+                                                <create>NULL</create>
+                                                <read>
+                                                    <path>self::node()</path>
+                                                    <context>parent</context>
+                                                </read>
+                                                <update>
+                                                    <path>self::node()</path>
+                                                    <context>parent</context>
+                                                </update>
+                                                <delete>NULL</delete>
+                                            </actions>
+                                        </properties>
+                                        <children/>
+                                    </element>
+                                </children>
+                            </element>
+                            <element name="cartographicsFieldset">
+                                <properties>
+                                    <type>fieldset</type>
+                                    <access>FALSE</access>
+                                    <collapsed>FALSE</collapsed>
+                                    <collapsible>FALSE</collapsible>
+                                    <disabled>FALSE</disabled>
+                                    <executes_submit_callback>FALSE</executes_submit_callback>
+                                    <multiple>FALSE</multiple>
+                                    <required>FALSE</required>
+                                    <resizable>FALSE</resizable>
+                                    <title>Cartographics</title>
+                                    <tree>TRUE</tree>
+                                    <actions>
+                                        <create>
+                                            <path>self::node()</path>
+                                            <context>parent</context>
+                                            <schema/>
+                                            <type>element</type>
+                                            <prefix>NULL</prefix>
+                                            <value>cartographics</value>
+                                        </create>
+                                        <read>
+                                            <path>mods:cartographics</path>
+                                            <context>parent</context>
+                                        </read>
+                                        <update>
+                                            <path>self::node()</path>
+                                            <context>self</context>
+                                        </update>
+                                        <delete>NULL</delete>
+                                    </actions>
+                                </properties>
+                                <children>
+                                    <element name="scale">
+                                        <properties>
+                                            <type>textfield</type>
+                                            <access>FALSE</access>
+                                            <collapsed>FALSE</collapsed>
+                                            <collapsible>FALSE</collapsible>
+                                            <disabled>FALSE</disabled>
+                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                            <multiple>FALSE</multiple>
+                                            <required>FALSE</required>
+                                            <resizable>FALSE</resizable>
+                                            <title>Scale</title>
+                                            <tree>TRUE</tree>
+                                            <actions>
                                                 <create>
                                                     <path>self::node()</path>
                                                     <context>parent</context>
                                                     <schema/>
                                                     <type>element</type>
                                                     <prefix>NULL</prefix>
-                                                    <value>geographic</value>
+                                                    <value>scale</value>
                                                 </create>
                                                 <read>
-                                                    <path>mods:geographic</path>
+                                                    <path>mods:scale</path>
                                                     <context>parent</context>
                                                 </read>
-                                                <update>NULL</update>
-                                                <delete>
+                                                <update>
                                                     <path>self::node()</path>
                                                     <context>self</context>
-                                                </delete>
+                                                </update>
+                                                <delete>NULL</delete>
                                             </actions>
                                         </properties>
-                                        <children>
-                                            <element name="authority">
-                                                <properties>
-                                                    <type>select</type>
-                                                    <access>TRUE</access>
-                                                    <collapsed>FALSE</collapsed>
-                                                    <collapsible>FALSE</collapsible>
-                                                    <default_value>none</default_value>
-                                                    <disabled>FALSE</disabled>
-                                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                                    <multiple>FALSE</multiple>
-                                                    <options>
-                                                        <none>None</none>
-                                                        <lcsh>Lcsh</lcsh>
-                                                    </options>
-                                                    <required>FALSE</required>
-                                                    <resizable>FALSE</resizable>
-                                                    <title>Authority</title>
-                                                    <tree>TRUE</tree>
-                                                    <actions>
-                                                        <create>
-                                                            <path>self::node()</path>
-                                                            <context>parent</context>
-                                                            <schema/>
-                                                            <type>attribute</type>
-                                                            <prefix>NULL</prefix>
-                                                            <value>authority</value>
-                                                        </create>
-                                                        <read>
-                                                            <path>@authority</path>
-                                                            <context>parent</context>
-                                                        </read>
-                                                        <update>
-                                                            <path>self::node()</path>
-                                                            <context>self</context>
-                                                        </update>
-                                                        <delete>NULL</delete>
-                                                    </actions>
-                                                </properties>
-                                                <children/>
-                                            </element>
-                                            <element name="geographicSubject">
-                                                <properties>
-                                                    <type>textfield</type>
-                                                    <access>TRUE</access>
-                                                    <collapsed>FALSE</collapsed>
-                                                    <collapsible>FALSE</collapsible>
-                                                    <disabled>FALSE</disabled>
-                                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                                    <multiple>FALSE</multiple>
-                                                    <required>FALSE</required>
-                                                    <resizable>FALSE</resizable>
-                                                    <title>Geographic Subject</title>
-                                                    <tree>TRUE</tree>
-                                                    <actions>
-                                                        <create>NULL</create>
-                                                        <read>
-                                                            <path>self::node()</path>
-                                                            <context>parent</context>
-                                                        </read>
-                                                        <update>
-                                                            <path>self::node()</path>
-                                                            <context>parent</context>
-                                                        </update>
-                                                        <delete>NULL</delete>
-                                                    </actions>
-                                                </properties>
-                                                <children/>
-                                            </element>
-                                        </children>
+                                        <children/>
+                                    </element>
+                                    <element name="coordinates">
+                                        <properties>
+                                            <type>textfield</type>
+                                            <access>FALSE</access>
+                                            <collapsed>FALSE</collapsed>
+                                            <collapsible>FALSE</collapsible>
+                                            <disabled>FALSE</disabled>
+                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                            <multiple>FALSE</multiple>
+                                            <required>FALSE</required>
+                                            <resizable>FALSE</resizable>
+                                            <title>Coordinates</title>
+                                            <tree>TRUE</tree>
+                                            <actions>
+                                                <create>
+                                                    <path>self::node()</path>
+                                                    <context>parent</context>
+                                                    <schema/>
+                                                    <type>element</type>
+                                                    <prefix>NULL</prefix>
+                                                    <value>coordinates</value>
+                                                </create>
+                                                <read>
+                                                    <path>mods:coordinates</path>
+                                                    <context>parent</context>
+                                                </read>
+                                                <update>
+                                                    <path>self::node()</path>
+                                                    <context>self</context>
+                                                </update>
+                                                <delete>NULL</delete>
+                                            </actions>
+                                        </properties>
+                                        <children/>
                                     </element>
                                 </children>
                             </element>
-                        </children>
-                    </element>
-                    <element name="hierarchicalGeographicFieldset">
-                        <properties>
-                            <type>fieldset</type>
-                            <access>FALSE</access>
-                            <collapsed>FALSE</collapsed>
-                            <collapsible>FALSE</collapsible>
-                            <disabled>FALSE</disabled>
-                            <executes_submit_callback>FALSE</executes_submit_callback>
-                            <multiple>FALSE</multiple>
-                            <required>FALSE</required>
-                            <resizable>FALSE</resizable>
-                            <title>Geographic Information</title>
-                            <tree>TRUE</tree>
-                            <actions>
-                                <create>
-                                    <path>self::node()</path>
-                                    <context>parent</context>
-                                    <schema/>
-                                    <type>element</type>
-                                    <prefix>NULL</prefix>
-                                    <value>hierarchicalGeographic</value>
-                                </create>
-                                <read>
-                                    <path>mods:hierarchicalGeographic</path>
-                                    <context>parent</context>
-                                </read>
-                                <update>NULL</update>
-                                <delete>NULL</delete>
-                            </actions>
-                        </properties>
-                        <children>
-                            <element name="citySection">
+                            <element name="nameSubjectFieldset">
                                 <properties>
-                                    <type>textfield</type>
-                                    <access>FALSE</access>
-                                    <collapsed>FALSE</collapsed>
-                                    <collapsible>FALSE</collapsible>
-                                    <disabled>FALSE</disabled>
-                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                    <multiple>FALSE</multiple>
-                                    <required>FALSE</required>
-                                    <resizable>FALSE</resizable>
-                                    <title>City Section</title>
-                                    <tree>TRUE</tree>
-                                    <actions>
-                                        <create>
-                                            <path>self::node()</path>
-                                            <context>parent</context>
-                                            <schema/>
-                                            <type>element</type>
-                                            <prefix>NULL</prefix>
-                                            <value>citySection</value>
-                                        </create>
-                                        <read>
-                                            <path>mods:citySection</path>
-                                            <context>parent</context>
-                                        </read>
-                                        <update>
-                                            <path>self::node()</path>
-                                            <context>self</context>
-                                        </update>
-                                        <delete>NULL</delete>
-                                    </actions>
-                                </properties>
-                                <children/>
-                            </element>
-                        </children>
-                    </element>
-                    <element name="cartographicsFieldset">
-                        <properties>
-                            <type>fieldset</type>
-                            <access>FALSE</access>
-                            <collapsed>FALSE</collapsed>
-                            <collapsible>FALSE</collapsible>
-                            <disabled>FALSE</disabled>
-                            <executes_submit_callback>FALSE</executes_submit_callback>
-                            <multiple>FALSE</multiple>
-                            <required>FALSE</required>
-                            <resizable>FALSE</resizable>
-                            <title>Cartographics</title>
-                            <tree>TRUE</tree>
-                            <actions>
-                                <create>
-                                    <path>self::node()</path>
-                                    <context>parent</context>
-                                    <schema/>
-                                    <type>element</type>
-                                    <prefix>NULL</prefix>
-                                    <value>cartographics</value>
-                                </create>
-                                <read>
-                                    <path>mods:cartographics</path>
-                                    <context>parent</context>
-                                </read>
-                                <update>
-                                    <path>self::node()</path>
-                                    <context>self</context>
-                                </update>
-                                <delete>NULL</delete>
-                            </actions>
-                        </properties>
-                        <children>
-                            <element name="scale">
-                                <properties>
-                                    <type>textfield</type>
-                                    <access>FALSE</access>
-                                    <collapsed>FALSE</collapsed>
-                                    <collapsible>FALSE</collapsible>
-                                    <disabled>FALSE</disabled>
-                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                    <multiple>FALSE</multiple>
-                                    <required>FALSE</required>
-                                    <resizable>FALSE</resizable>
-                                    <title>Scale</title>
-                                    <tree>TRUE</tree>
-                                    <actions>
-                                        <create>
-                                            <path>self::node()</path>
-                                            <context>parent</context>
-                                            <schema/>
-                                            <type>element</type>
-                                            <prefix>NULL</prefix>
-                                            <value>scale</value>
-                                        </create>
-                                        <read>
-                                            <path>mods:scale</path>
-                                            <context>parent</context>
-                                        </read>
-                                        <update>
-                                            <path>self::node()</path>
-                                            <context>self</context>
-                                        </update>
-                                        <delete>NULL</delete>
-                                    </actions>
-                                </properties>
-                                <children/>
-                            </element>
-                            <element name="coordinates">
-                                <properties>
-                                    <type>textfield</type>
-                                    <access>FALSE</access>
-                                    <collapsed>FALSE</collapsed>
-                                    <collapsible>FALSE</collapsible>
-                                    <disabled>FALSE</disabled>
-                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                    <multiple>FALSE</multiple>
-                                    <required>FALSE</required>
-                                    <resizable>FALSE</resizable>
-                                    <title>Coordinates</title>
-                                    <tree>TRUE</tree>
-                                    <actions>
-                                        <create>
-                                            <path>self::node()</path>
-                                            <context>parent</context>
-                                            <schema/>
-                                            <type>element</type>
-                                            <prefix>NULL</prefix>
-                                            <value>coordinates</value>
-                                        </create>
-                                        <read>
-                                            <path>mods:coordinates</path>
-                                            <context>parent</context>
-                                        </read>
-                                        <update>
-                                            <path>self::node()</path>
-                                            <context>self</context>
-                                        </update>
-                                        <delete>NULL</delete>
-                                    </actions>
-                                </properties>
-                                <children/>
-                            </element>
-                        </children>
-                    </element>
-                    <element name="nameSubjectFieldset">
-                        <properties>
-                            <type>fieldset</type>
-                            <access>TRUE</access>
-                            <collapsed>FALSE</collapsed>
-                            <collapsible>FALSE</collapsible>
-                            <disabled>FALSE</disabled>
-                            <executes_submit_callback>FALSE</executes_submit_callback>
-                            <multiple>FALSE</multiple>
-                            <required>FALSE</required>
-                            <resizable>FALSE</resizable>
-                            <title>Names as subject</title>
-                            <tree>TRUE</tree>
-                        </properties>
-                        <children>
-                            <element name="name">
-                                <properties>
-                                    <type>tabs</type>
+                                    <type>fieldset</type>
                                     <access>TRUE</access>
                                     <collapsed>FALSE</collapsed>
                                     <collapsible>FALSE</collapsible>
@@ -2003,13 +1886,13 @@
                                     <multiple>FALSE</multiple>
                                     <required>FALSE</required>
                                     <resizable>FALSE</resizable>
-                                    <title>Name</title>
+                                    <title>Names as subject</title>
                                     <tree>TRUE</tree>
                                 </properties>
                                 <children>
-                                    <element name="0">
+                                    <element name="name">
                                         <properties>
-                                            <type>tabpanel</type>
+                                            <type>tabs</type>
                                             <access>TRUE</access>
                                             <collapsed>FALSE</collapsed>
                                             <collapsible>FALSE</collapsible>
@@ -2018,6 +1901,214 @@
                                             <multiple>FALSE</multiple>
                                             <required>FALSE</required>
                                             <resizable>FALSE</resizable>
+                                            <title>Name</title>
+                                            <tree>TRUE</tree>
+                                        </properties>
+                                        <children>
+                                            <element name="0">
+                                                <properties>
+                                                    <type>tabpanel</type>
+                                                    <access>TRUE</access>
+                                                    <collapsed>FALSE</collapsed>
+                                                    <collapsible>FALSE</collapsible>
+                                                    <disabled>FALSE</disabled>
+                                                    <executes_submit_callback>FALSE</executes_submit_callback>
+                                                    <multiple>FALSE</multiple>
+                                                    <required>FALSE</required>
+                                                    <resizable>FALSE</resizable>
+                                                    <tree>TRUE</tree>
+                                                    <actions>
+                                                        <create>
+                                                            <path>self::node()</path>
+                                                            <context>parent</context>
+                                                            <schema/>
+                                                            <type>element</type>
+                                                            <prefix>NULL</prefix>
+                                                            <value>name</value>
+                                                        </create>
+                                                        <read>
+                                                            <path>mods:name</path>
+                                                            <context>parent</context>
+                                                        </read>
+                                                        <update>NULL</update>
+                                                        <delete>
+                                                            <path>self::node()</path>
+                                                            <context>self</context>
+                                                        </delete>
+                                                    </actions>
+                                                </properties>
+                                                <children>
+                                                    <element name="type">
+                                                        <properties>
+                                                            <type>select</type>
+                                                            <access>TRUE</access>
+                                                            <collapsed>FALSE</collapsed>
+                                                            <collapsible>FALSE</collapsible>
+                                                            <default_value>personal</default_value>
+                                                            <disabled>FALSE</disabled>
+                                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                                            <multiple>FALSE</multiple>
+                                                            <options>
+                                                                <corporate>corporate</corporate>
+                                                                <personal>personal</personal>
+                                                            </options>
+                                                            <required>TRUE</required>
+                                                            <resizable>FALSE</resizable>
+                                                            <title>Type</title>
+                                                            <tree>TRUE</tree>
+                                                            <actions>
+                                                                <create>
+                                                                    <path>self::node()</path>
+                                                                    <context>parent</context>
+                                                                    <schema/>
+                                                                    <type>attribute</type>
+                                                                    <prefix>NULL</prefix>
+                                                                    <value>type</value>
+                                                                </create>
+                                                                <read>
+                                                                    <path>@type</path>
+                                                                    <context>parent</context>
+                                                                </read>
+                                                                <update>
+                                                                    <path>self::node()</path>
+                                                                    <context>self</context>
+                                                                </update>
+                                                                <delete>NULL</delete>
+                                                            </actions>
+                                                        </properties>
+                                                        <children/>
+                                                    </element>
+                                                    <element name="namePart">
+                                                        <properties>
+                                                            <type>textfield</type>
+                                                            <access>TRUE</access>
+                                                            <collapsed>FALSE</collapsed>
+                                                            <collapsible>FALSE</collapsible>
+                                                            <description>A full personal name or full corporate/meeting name</description>
+                                                            <disabled>FALSE</disabled>
+                                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                                            <multiple>FALSE</multiple>
+                                                            <required>FALSE</required>
+                                                            <resizable>FALSE</resizable>
+                                                            <title>Name</title>
+                                                            <tree>TRUE</tree>
+                                                            <actions>
+                                                                <create>
+                                                                    <path>self::node()</path>
+                                                                    <context>parent</context>
+                                                                    <schema/>
+                                                                    <type>xml</type>
+                                                                    <prefix>NULL</prefix>
+                                                                    <value>&lt;namePart&gt;%value%&lt;/namePart&gt;</value>
+                                                                </create>
+                                                                <read>
+                                                                    <path>mods:namePart</path>
+                                                                    <context>parent</context>
+                                                                </read>
+                                                                <update>
+                                                                    <path>self::node()</path>
+                                                                    <context>self</context>
+                                                                </update>
+                                                                <delete>
+                                                                    <path>self::node()</path>
+                                                                    <context>self</context>
+                                                                </delete>
+                                                            </actions>
+                                                        </properties>
+                                                        <children/>
+                                                    </element>
+                                                    <element name="authority">
+                                                        <properties>
+                                                            <type>select</type>
+                                                            <access>TRUE</access>
+                                                            <collapsed>FALSE</collapsed>
+                                                            <collapsible>FALSE</collapsible>
+                                                            <default_value>none</default_value>
+                                                            <description>The controlled vocabulary from which the name was taken.</description>
+                                                            <disabled>FALSE</disabled>
+                                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                                            <multiple>FALSE</multiple>
+                                                            <options>
+                                                                <none>None</none>
+                                                                <naf>Naf</naf>
+                                                                <ulan>Ulan</ulan>
+                                                                <viaf>Viaf</viaf>
+                                                            </options>
+                                                            <required>FALSE</required>
+                                                            <resizable>FALSE</resizable>
+                                                            <title>Authority</title>
+                                                            <tree>TRUE</tree>
+                                                            <actions>
+                                                                <create>
+                                                                    <path>self::node()</path>
+                                                                    <context>parent</context>
+                                                                    <schema/>
+                                                                    <type>attribute</type>
+                                                                    <prefix>NULL</prefix>
+                                                                    <value>authority</value>
+                                                                </create>
+                                                                <read>
+                                                                    <path>@authority</path>
+                                                                    <context>parent</context>
+                                                                </read>
+                                                                <update>
+                                                                    <path>self::node()</path>
+                                                                    <context>self</context>
+                                                                </update>
+                                                                <delete>NULL</delete>
+                                                            </actions>
+                                                        </properties>
+                                                        <children/>
+                                                    </element>
+                                                </children>
+                                            </element>
+                                        </children>
+                                    </element>
+                                </children>
+                            </element>
+                            <element name="hierarchicalGeographicFieldset">
+                                <properties>
+                                    <type>fieldset</type>
+                                    <access>FALSE</access>
+                                    <collapsed>FALSE</collapsed>
+                                    <collapsible>FALSE</collapsible>
+                                    <disabled>FALSE</disabled>
+                                    <executes_submit_callback>FALSE</executes_submit_callback>
+                                    <multiple>FALSE</multiple>
+                                    <required>FALSE</required>
+                                    <resizable>FALSE</resizable>
+                                    <title>Geographic Information</title>
+                                    <tree>TRUE</tree>
+                                    <actions>
+                                        <create>
+                                            <path>self::node()</path>
+                                            <context>parent</context>
+                                            <schema/>
+                                            <type>element</type>
+                                            <prefix>NULL</prefix>
+                                            <value>hierarchicalGeographic</value>
+                                        </create>
+                                        <read>
+                                            <path>mods:hierarchicalGeographic</path>
+                                            <context>parent</context>
+                                        </read>
+                                        <update>NULL</update>
+                                        <delete>NULL</delete>
+                                    </actions>
+                                </properties>
+                                <children>
+                                    <element name="citySection">
+                                        <properties>
+                                            <type>textfield</type>
+                                            <access>FALSE</access>
+                                            <collapsed>FALSE</collapsed>
+                                            <collapsible>FALSE</collapsible>
+                                            <disabled>FALSE</disabled>
+                                            <executes_submit_callback>FALSE</executes_submit_callback>
+                                            <multiple>FALSE</multiple>
+                                            <required>FALSE</required>
+                                            <resizable>FALSE</resizable>
+                                            <title>City Section</title>
                                             <tree>TRUE</tree>
                                             <actions>
                                                 <create>
@@ -2026,143 +2117,20 @@
                                                     <schema/>
                                                     <type>element</type>
                                                     <prefix>NULL</prefix>
-                                                    <value>name</value>
+                                                    <value>citySection</value>
                                                 </create>
                                                 <read>
-                                                    <path>mods:name</path>
+                                                    <path>mods:citySection</path>
                                                     <context>parent</context>
                                                 </read>
-                                                <update>NULL</update>
-                                                <delete>
+                                                <update>
                                                     <path>self::node()</path>
                                                     <context>self</context>
-                                                </delete>
+                                                </update>
+                                                <delete>NULL</delete>
                                             </actions>
                                         </properties>
-                                        <children>
-                                            <element name="type">
-                                                <properties>
-                                                    <type>select</type>
-                                                    <access>TRUE</access>
-                                                    <collapsed>FALSE</collapsed>
-                                                    <collapsible>FALSE</collapsible>
-                                                    <default_value>personal</default_value>
-                                                    <disabled>FALSE</disabled>
-                                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                                    <multiple>FALSE</multiple>
-                                                    <options>
-                                                        <corporate>corporate</corporate>
-                                                        <personal>personal</personal>
-                                                    </options>
-                                                    <required>TRUE</required>
-                                                    <resizable>FALSE</resizable>
-                                                    <title>Type</title>
-                                                    <tree>TRUE</tree>
-                                                    <actions>
-                                                        <create>
-                                                            <path>self::node()</path>
-                                                            <context>parent</context>
-                                                            <schema/>
-                                                            <type>attribute</type>
-                                                            <prefix>NULL</prefix>
-                                                            <value>type</value>
-                                                        </create>
-                                                        <read>
-                                                            <path>@type</path>
-                                                            <context>parent</context>
-                                                        </read>
-                                                        <update>
-                                                            <path>self::node()</path>
-                                                            <context>self</context>
-                                                        </update>
-                                                        <delete>NULL</delete>
-                                                    </actions>
-                                                </properties>
-                                                <children/>
-                                            </element>
-                                            <element name="namePart">
-                                                <properties>
-                                                    <type>textfield</type>
-                                                    <access>TRUE</access>
-                                                    <collapsed>FALSE</collapsed>
-                                                    <collapsible>FALSE</collapsible>
-                                                    <description>A full personal name or full corporate/meeting name</description>
-                                                    <disabled>FALSE</disabled>
-                                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                                    <multiple>FALSE</multiple>
-                                                    <required>FALSE</required>
-                                                    <resizable>FALSE</resizable>
-                                                    <title>Name</title>
-                                                    <tree>TRUE</tree>
-                                                    <actions>
-                                                        <create>
-                                                            <path>self::node()</path>
-                                                            <context>parent</context>
-                                                            <schema/>
-                                                            <type>xml</type>
-                                                            <prefix>NULL</prefix>
-                                                            <value>&lt;namePart&gt;%value%&lt;/namePart&gt;</value>
-                                                        </create>
-                                                        <read>
-                                                            <path>mods:namePart</path>
-                                                            <context>parent</context>
-                                                        </read>
-                                                        <update>
-                                                            <path>self::node()</path>
-                                                            <context>self</context>
-                                                        </update>
-                                                        <delete>
-                                                            <path>self::node()</path>
-                                                            <context>self</context>
-                                                        </delete>
-                                                    </actions>
-                                                </properties>
-                                                <children/>
-                                            </element>
-                                            <element name="authority">
-                                                <properties>
-                                                    <type>select</type>
-                                                    <access>TRUE</access>
-                                                    <collapsed>FALSE</collapsed>
-                                                    <collapsible>FALSE</collapsible>
-                                                    <default_value>none</default_value>
-                                                    <description>The controlled vocabulary from which the name was taken.</description>
-                                                    <disabled>FALSE</disabled>
-                                                    <executes_submit_callback>FALSE</executes_submit_callback>
-                                                    <multiple>FALSE</multiple>
-                                                    <options>
-                                                        <none>None</none>
-                                                        <naf>Naf</naf>
-                                                        <ulan>Ulan</ulan>
-                                                        <viaf>Viaf</viaf>
-                                                    </options>
-                                                    <required>FALSE</required>
-                                                    <resizable>FALSE</resizable>
-                                                    <title>Authority</title>
-                                                    <tree>TRUE</tree>
-                                                    <actions>
-                                                        <create>
-                                                            <path>self::node()</path>
-                                                            <context>parent</context>
-                                                            <schema/>
-                                                            <type>attribute</type>
-                                                            <prefix>NULL</prefix>
-                                                            <value>authority</value>
-                                                        </create>
-                                                        <read>
-                                                            <path>@authority</path>
-                                                            <context>parent</context>
-                                                        </read>
-                                                        <update>
-                                                            <path>self::node()</path>
-                                                            <context>self</context>
-                                                        </update>
-                                                        <delete>NULL</delete>
-                                                    </actions>
-                                                </properties>
-                                                <children/>
-                                            </element>
-                                        </children>
+                                        <children/>
                                     </element>
                                 </children>
                             </element>
