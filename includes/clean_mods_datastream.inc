@@ -15,7 +15,9 @@ function metrodora_clean_mods_datastream(AbstractObject $object, $force, $hook) 
 
   $original_doc = new DOMDocument();
   $original_doc->loadXML($object['MODS']->content);
-  $transformed_doc = metrodora_run_xslt($original_doc, drupal_get_path('module', 'metrodora') . '/transforms/cleanup_mods.xsl');
+  $transformed_doc = metrodora_run_xslt($original_doc,
+    drupal_get_path('module', 'xml_forms') .
+    '/builder/self_transforms/islandora_cleanup_mods_extended.xsl');
   if (!metrodora_domdocuments_equal($original_doc, $transformed_doc)) {
     $object['MODS']->content = $transformed_doc->saveXML();
     return array(

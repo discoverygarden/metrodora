@@ -493,6 +493,7 @@ function metrodora_islandora_compound_object_management_control_paths() {
     'islandora/object/%/compound-child-metadata',
   );
 }
+
 /**
  * Implements hook_islandora_derivative().
  *

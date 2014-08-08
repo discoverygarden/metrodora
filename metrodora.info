@@ -4,5 +4,6 @@ package = Islandora
 dependencies[] = islandora
 dependencies[] = islandora_basic_collection
 dependencies[] = islandora_compound_object
+dependencies[] = xml_forms
 core = 7.x
 php = 5.3
