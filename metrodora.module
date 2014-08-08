@@ -493,3 +493,22 @@ function metrodora_islandora_compound_object_management_control_paths() {
     'islandora/object/%/compound-child-metadata',
   );
 }
+/**
+ * Implements hook_islandora_derivative().
+ *
+ * This hook fires when an object/datastream is ingested or a datasteam is
+ * modified, and is being used to clean the datastream of empty mod elements.
+ */
+function metrodora_islandora_derivative(AbstractObject $object = NULL) {
+
+  $derivatives[] = array(
+    'source_dsid' => 'MODS',
+    'destination_dsid' => 'MODS',
+    'function' => array(
+      'metrodora_clean_mods_datastream',
+    ),
+    'file' => drupal_get_path('module', 'metrodora') . '/includes/clean_mods_datastream.inc',
+  );
+
+  return $derivatives;
+}
