@@ -415,16 +415,8 @@ function metrodora_islandora_xml_form_builder_form_associations() {
  */
 function metrodora_build_variable_elements_array(&$form) {
   $elements_to_enable = array(
-    'murrayhill' => array(
-      &$form['subject']['hierarchicalGeographicFieldset'],
-      &$form['subject']['hierarchicalGeographicFieldset']['citySection'],
-      &$form['subject']['cartographicsFieldset'],
-      &$form['subject']['cartographicsFieldset']['coordinates'],
-    ),
-    'zoomaps' => array(
-      &$form['subject']['cartographicsFieldset'],
-      &$form['subject']['cartographicsFieldset']['scale'],
-    ),
+    'murrayhill' => array(),
+    'zoomaps' => array(),
     'bronxpark' => array(
       &$form['relatedItemFieldset']['relatedSeries'],
     ),
@@ -458,6 +450,7 @@ function metrodora_build_variable_elements_array(&$form) {
   if (!empty($type)) {
     $elements_to_enable['lesbianherstory'] = array_merge($elements_to_enable['lesbianherstory'], $type);
   }
+
   return $elements_to_enable;
 }
 
@@ -492,4 +485,43 @@ function metrodora_islandora_compound_object_management_control_paths() {
     'islandora/object/%/compound-parent-metadata',
     'islandora/object/%/compound-child-metadata',
   );
+}
+
+/**
+ * Implements xml_form_builder_definition_alter().
+ *
+ * Tab panel elements that you wish to grant access to based on collection
+ * needs to be done in a modify to the original xml form definition before it
+ * is loaded into the form.  Only Needed to modify for murrayhill and zoomaps.
+ * IMPORTANT: since this modifies the xml of the form template before it is
+ * loaded you only need to set access on the first element in the tab panel
+ * and the reset will be done through inheritance when the form is actually
+ * loaded.
+ *
+ * @param array $form
+ *   The form array before the initial form builder XML is saved in.
+ *
+ * @param array $form_state
+ *   The form_state array.
+ */
+function metrodora_xml_form_builder_get_form_modify_definition_alter(&$form, &$form_state) {
+  module_load_include('inc', 'islandora', 'includes/utilities');
+  $object = menu_get_object('islandora_object', 2);
+  if ($object) {
+    $namespace = islandora_get_namespace($object);
+    if ($namespace == 'murrayhill') {
+      // Grant access to the cartographicsFieldset and coordinates field.
+      $form['subjects'][0]['cartographicsFieldset']['#access'] = 1;
+      $form['subjects'][0]['cartographicsFieldset']['coordinates']['#access'] = 1;
+
+      // Grant access to hierarchicalGeographicFieldset and citySection field.
+      $form['subjects'][0]['hierarchicalGeographicFieldset']['#access'] = 1;
+      $form['subjects'][0]['hierarchicalGeographicFieldset']['citySection']['#access'] = 1;
+    }
+    if ($namespace == 'zoomaps') {
+      // Grant access to the cartographic fieldset and scale field.
+      $form['subjects'][0]['cartographicsFieldset']['#access'] = 1;
+      $form['subjects'][0]['cartographicsFieldset']['scale']['#access'] = 1;
+    }
+  }
 }
