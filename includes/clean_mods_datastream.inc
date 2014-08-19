@@ -16,16 +16,14 @@ function metrodora_clean_mods_datastream(AbstractObject $object, $force, $hook) 
   $original_doc = new DOMDocument();
   $original_doc->loadXML($object['MODS']->content);
   $transformed_doc = metrodora_run_xslt($original_doc,
-    drupal_get_path('module', 'xml_forms') .
-    '/builder/self_transforms/islandora_cleanup_mods_extended.xsl');
+  drupal_get_path('module', 'xml_form_builder') . '/self_transforms/islandora_cleanup_mods_extended.xsl');
   if (!metrodora_domdocuments_equal($original_doc, $transformed_doc)) {
     $object['MODS']->content = $transformed_doc->saveXML();
     return array(
       'success' => TRUE,
       'messages' => array(
         array(
-          'message' => t('Removed unused element(s) from MODS datastream for
-          @pid.'),
+          'message' => t('Removed unused element(s) from MODS datastream for @pid.'),
           'message_sub' => array(
             '@pid' => $object->id,
           ),
