@@ -501,6 +501,7 @@ function metrodora_islandora_compound_object_management_control_paths() {
  * modified, and is being used to clean the datastream of empty mod elements.
  */
 function metrodora_islandora_derivative(AbstractObject $object = NULL) {
+  $derivatives = array();
 
   $derivatives[] = array(
     'source_dsid' => 'MODS',
@@ -509,6 +510,7 @@ function metrodora_islandora_derivative(AbstractObject $object = NULL) {
       'metrodora_clean_mods_datastream',
     ),
     'file' => drupal_get_path('module', 'metrodora') . '/includes/clean_mods_datastream.inc',
+    'weight' => -1,
   );
 
   return $derivatives;
