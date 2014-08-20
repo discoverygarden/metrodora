@@ -461,18 +461,20 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
   if (metrodora_compound_child_metadata_access($object)) {
     // We'll assume that the empty string is the solution pack markup.
     $markup = new DOMDocument('1.0', 'utf-8');
-    $markup->loadHTML($rendered['']['#markup']);
-    $xpath = new DOMXpath($markup);
-    $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
-    // Should only be one of these.
-    $parent_node = FALSE;
-    foreach ($result as $element) {
-      $parent_node = $element->parentNode;
-      $parent_node->removeChild($element);
-      break;
-    }
-    if ($parent_node) {
-      $rendered['']['#markup'] = $parent_node->ownerDocument->saveHTML();
+    foreach ($rendered as $key => $val) {
+      $markup->loadHTML($rendered[$key]['#markup']);
+      $xpath = new DOMXpath($markup);
+      $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
+      // Should only be one of these.
+      $parent_node = FALSE;
+      foreach ($result as $element) {
+        $parent_node = $element->parentNode;
+        $parent_node->removeChild($element);
+        break;
+      }
+      if ($parent_node) {
+        $rendered[$key]['#markup'] = $parent_node->ownerDocument->saveHTML();
+      }
     }
   }
 }
