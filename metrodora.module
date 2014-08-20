@@ -460,8 +460,8 @@ function metrodora_build_variable_elements_array(&$form) {
 function metrodora_islandora_view_object_alter(&$object, &$rendered) {
   if (metrodora_compound_child_metadata_access($object)) {
     // We'll assume that the empty string is the solution pack markup.
-    $markup = new DOMDocument('1.0', 'utf-8');
     foreach ($rendered as $key => $val) {
+      $markup = new DOMDocument('1.0', 'utf-8');
       $markup->loadHTML($rendered[$key]['#markup']);
       $xpath = new DOMXpath($markup);
       $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
