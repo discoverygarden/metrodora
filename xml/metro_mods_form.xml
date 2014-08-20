@@ -1433,7 +1433,7 @@
                             <element name="displayLabel">
                                 <properties>
                                     <type>select</type>
-                                    <access>FALSE</access>
+                                    <access>TRUE</access>
                                     <collapsed>FALSE</collapsed>
                                     <collapsible>FALSE</collapsible>
                                     <default_value>none</default_value>
