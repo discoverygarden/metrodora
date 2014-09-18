@@ -446,10 +446,6 @@ function metrodora_build_variable_elements_array(&$form) {
     $elements_to_enable['cuny34thstreet'] = array_merge($elements_to_enable['cuny34thstreet'], $display_label);
     $elements_to_enable['snugharbor'] = array_merge($elements_to_enable['snugharbor'], $display_label);
   }
-  $type = metrodora_build_repeatable_element_array($form['description'], 'type');
-  if (!empty($type)) {
-    $elements_to_enable['lesbianherstory'] = array_merge($elements_to_enable['lesbianherstory'], $type);
-  }
 
   return $elements_to_enable;
 }
@@ -527,6 +523,9 @@ function metrodora_xml_form_builder_get_form_modify_definition_alter(&$form, &$f
       // Grant access to the cartographic fieldset and scale field.
       $form['subjects'][0]['cartographicsFieldset']['#access'] = 1;
       $form['subjects'][0]['cartographicsFieldset']['scale']['#access'] = 1;
+    }
+    if ($namespace == 'lesbianherstory') {
+      $form['description'][0]['type']['#access'] = 1;
     }
   }
 }
