@@ -1613,7 +1613,7 @@
                                             <tree>TRUE</tree>
                                             <actions>
                                                 <create>
-                                                    <path>self::node()/../@authority</path>
+                                                    <path>self::node()/..</path>
                                                     <context>parent</context>
                                                     <schema/>
                                                     <type>attribute</type>
