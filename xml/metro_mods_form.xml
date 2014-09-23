@@ -92,8 +92,8 @@
                                     <executes_submit_callback>FALSE</executes_submit_callback>
                                     <multiple>FALSE</multiple>
                                     <options>
-                                        <alternative>Alternative</alternative>
                                         <index key=""/>
+                                        <alternative>Alternative</alternative>
                                     </options>
                                     <required>FALSE</required>
                                     <resizable>FALSE</resizable>
@@ -556,8 +556,8 @@
                                     <executes_submit_callback>FALSE</executes_submit_callback>
                                     <multiple>FALSE</multiple>
                                     <options>
-                                        <lctgm>Lctgm</lctgm>
                                         <index key=""/>
+                                        <lctgm>Lctgm</lctgm>
                                     </options>
                                     <required>FALSE</required>
                                     <resizable>FALSE</resizable>
@@ -1101,8 +1101,8 @@
                             <executes_submit_callback>FALSE</executes_submit_callback>
                             <multiple>FALSE</multiple>
                             <options>
-                                <index key="born digital">born digital</index>
                                 <index key=""/>
+                                <index key="born digital">born digital</index>
                                 <index key="reformatted digital">reformatted digital</index>
                             </options>
                             <required>FALSE</required>
@@ -1143,11 +1143,11 @@
                             <executes_submit_callback>FALSE</executes_submit_callback>
                             <multiple>FALSE</multiple>
                             <options>
+                                <index key=""/>
                                 <index key="application/pdf">application/pdf</index>
                                 <index key="image/jp2">image/jp2</index>
                                 <index key="image/jpeg">image/jpeg</index>
                                 <index key="image/tiff">image/tiff</index>
-                                <index key=""/>
                             </options>
                             <required>FALSE</required>
                             <resizable>FALSE</resizable>
@@ -1271,8 +1271,8 @@
                                     <executes_submit_callback>FALSE</executes_submit_callback>
                                     <multiple>FALSE</multiple>
                                     <options>
-                                        <description>Description</description>
                                         <index key=""/>
+                                        <description>Description</description>
                                         <note>Note</note>
                                     </options>
                                     <required>FALSE</required>
@@ -1396,8 +1396,8 @@
                                     <executes_submit_callback>FALSE</executes_submit_callback>
                                     <multiple>FALSE</multiple>
                                     <options>
-                                        <dateuncontrolled>Date Uncontrolled</dateuncontrolled>
                                         <index key=""/>
+                                        <dateuncontrolled>Date Uncontrolled</dateuncontrolled>
                                         <ownership>Ownership</ownership>
                                         <publishinginfo>Publishing Information</publishinginfo>
                                     </options>
@@ -1438,6 +1438,7 @@
                                     <executes_submit_callback>FALSE</executes_submit_callback>
                                     <multiple>FALSE</multiple>
                                     <options>
+                                        <index key=""/>
                                         <index key="Business Address">Business Address</index>
                                         <index key="Call Number">Call Number</index>
                                         <index key="Collection Note">Collection Note</index>
@@ -1448,7 +1449,6 @@
                                         <index key="Date Razed">Date Razed</index>
                                         <Inscription>Inscription</Inscription>
                                         <index key="Is Part Of">Is Part Of</index>
-                                        <index key=""/>
                                         <index key="Original Owner">Original Owner</index>
                                         <index key="Photographer Note">Photographer Note</index>
                                         <index key="Previously Known As">Previously Known As</index>
@@ -1603,9 +1603,9 @@
                                             <executes_submit_callback>FALSE</executes_submit_callback>
                                             <multiple>FALSE</multiple>
                                             <options>
+                                                <index key=""/>
                                                 <lcsh>Lcsh</lcsh>
                                                 <lctgm>Lctgm</lctgm>
-                                                <index key=""/>
                                             </options>
                                             <required>FALSE</required>
                                             <resizable>FALSE</resizable>
@@ -1706,8 +1706,8 @@
                                             <executes_submit_callback>FALSE</executes_submit_callback>
                                             <multiple>FALSE</multiple>
                                             <options>
-                                                <lcsh>Lcsh</lcsh>
                                                 <index key=""/>
+                                                <lcsh>Lcsh</lcsh>
                                             </options>
                                             <required>FALSE</required>
                                             <resizable>FALSE</resizable>
@@ -1994,8 +1994,8 @@
                                             <executes_submit_callback>FALSE</executes_submit_callback>
                                             <multiple>FALSE</multiple>
                                             <options>
-                                                <naf>Naf</naf>
                                                 <index key=""/>
+                                                <naf>Naf</naf>
                                                 <ulan>Ulan</ulan>
                                                 <viaf>Viaf</viaf>
                                             </options>
