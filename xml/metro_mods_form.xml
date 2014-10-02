@@ -1177,7 +1177,7 @@
                     </element>
                     <element name="condition">
                         <properties>
-                            <type>textfield</type>
+                            <type>textarea</type>
                             <access>TRUE</access>
                             <collapsed>FALSE</collapsed>
                             <collapsible>FALSE</collapsible>
@@ -1715,7 +1715,7 @@
                                             <tree>TRUE</tree>
                                             <actions>
                                                 <create>
-                                                    <path>self::node()</path>
+                                                    <path>self::node()/..</path>
                                                     <context>parent</context>
                                                     <schema/>
                                                     <type>attribute</type>
@@ -1723,11 +1723,11 @@
                                                     <value>authority</value>
                                                 </create>
                                                 <read>
-                                                    <path>@authority</path>
+                                                    <path>self::node()/../@authority</path>
                                                     <context>parent</context>
                                                 </read>
                                                 <update>
-                                                    <path>self::node()</path>
+                                                    <path>self::node()/../@authority</path>
                                                     <context>self</context>
                                                 </update>
                                                 <delete>NULL</delete>
@@ -2311,7 +2311,7 @@
                     </element>
                     <element name="appearsIn">
                         <properties>
-                            <type>textfield</type>
+                            <type>textarea</type>
                             <access>FALSE</access>
                             <collapsed>FALSE</collapsed>
                             <collapsible>FALSE</collapsible>

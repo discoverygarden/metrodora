@@ -266,9 +266,8 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
       // Check if "update" is set so we only modify the second step on editing
       // a MODS form.
       if (isset($form['update'])) {
-        $object = menu_get_object('islandora_object', 2);
-        if ($object) {
-          $namespace = islandora_get_namespace($object);
+        $namespace = islandora_get_namespace($form_state['pid']);
+        if ($namespace) {
           $elements_to_enable = metrodora_build_variable_elements_array($form);
           metrodora_modify_namespace_specific_fields($form, $elements_to_enable, $namespace);
         }
@@ -344,6 +343,7 @@ function metrodora_build_repeatable_element_array(&$form, $field_key = FALSE) {
  *   A string holding the namespace of the collection being ingested into.
  */
 function metrodora_modify_namespace_specific_fields(&$form, &$elements_to_enable, $namespace) {
+  //dsm($form);
   if (isset($elements_to_enable[$namespace])) {
     foreach ($elements_to_enable[$namespace] as &$element) {
       $element['#access'] = TRUE;
