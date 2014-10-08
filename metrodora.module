@@ -216,10 +216,10 @@ function metrodora_menu() {
   $items = array();
   $items['islandora/object/%islandora_object/compound-parent-metadata'] = array(
     'title' => 'Object Description',
-    'page callback' => 'metrodora_compound_parent_metadata',
+    'page callback' => 'metrodora_metadata_tab',
     'page arguments' => array(2),
     'type' => MENU_LOCAL_TASK,
-    'access callback' => 'metrodora_compound_parent_metadata_access',
+    'access callback' => 'metrodora_metadata_tab_access',
     'access arguments' => array(2),
     'file' => 'includes/metadata.inc',
     'weight' => 1,
@@ -277,7 +277,7 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Access callback for viewing parent metadata tab.
+ * Access callback for viewing parent/current object metadata tab.
  *
  * @param AbstractObject $object
  *   An AbstractObject representing a Fedora object.
@@ -285,9 +285,11 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
  * @return bool
  *   TRUE if the user can see the tab, FALSE otherwise.
  */
-function metrodora_compound_parent_metadata_access(AbstractObject $object) {
+function metrodora_metadata_tab_access(AbstractObject $object) {
+  module_load_include('inc', 'metrodora', 'includes/utilities');
   $compound_info = islandora_compound_object_retrieve_compound_info($object);
-  return $compound_info || in_array('islandora:compoundCModel', $object->models);
+  return $compound_info || in_array('islandora:compoundCModel', $object->models) ||
+    !array_diff($object->models, metrodora_metadata_tab_cmodels());
 }
 
 /**
