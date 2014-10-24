@@ -462,7 +462,8 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
         continue;
       }
       $markup = new DOMDocument('1.0', 'utf-8');
-      $markup->loadHTML($rendered[$key]['#markup']);
+      // Temporarily suppress warnings on malforned DC data. 
+      @$markup->loadHTML($rendered[$key]['#markup']);
       $xpath = new DOMXpath($markup);
       $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
       // Should only be one of these.
