@@ -25,9 +25,14 @@ function metrodora_metadata_tab(AbstractObject $object) {
   else {
     $metadata_object = $object;
   }
+  // Add Thumbnail to Object Description Tab.
+  drupal_add_css(drupal_get_path('module', 'metrodora') . '/css/metrodora.objectdescription.css');
+  $img = islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN']) ?
+    theme('image', array('path' => url("islandora/object/{$object->id}/datastream/TN/view"), 'attributes' => array('title' => $object->label))) :
+    '';
   return array(
     'metadata' => array(
-      '#markup' => islandora_retrieve_metadata_markup($metadata_object, TRUE),
+      '#markup' => "<div class='islandora-object-description-thumbnail'>$img</div>".islandora_retrieve_metadata_markup($metadata_object, TRUE),
     ),
   );
 }
@@ -46,6 +51,7 @@ function metrodora_compound_child_metadata(AbstractObject $object) {
   $children = islandora_compound_object_get_parts($object);
   $pid = (!empty($children)) ? $children[0] : $object->id;
   $compound_object = islandora_object_load($pid);
+  dsm(islandora_retrieve_metadata_markup($compound_object, TRUE));
   return array(
     'metadata' => array(
       '#markup' => islandora_retrieve_metadata_markup($compound_object, TRUE),
