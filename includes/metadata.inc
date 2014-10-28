@@ -25,16 +25,27 @@ function metrodora_metadata_tab(AbstractObject $object) {
   else {
     $metadata_object = $object;
   }
+  $tab['metadata'] = array();
   // Add Thumbnail to Object Description Tab.
-  drupal_add_css(drupal_get_path('module', 'metrodora') . '/css/metrodora.objectdescription.css');
-  $img = islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN']) ?
-    theme('image', array('path' => url("islandora/object/{$object->id}/datastream/TN/view"), 'attributes' => array('title' => $object->label))) :
-    '';
-  return array(
-    'metadata' => array(
-      '#markup' => "<div class='islandora-object-description-thumbnail'>$img</div>" . islandora_retrieve_metadata_markup($metadata_object, TRUE),
-    ),
+  if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
+    $tab['#attached']['css'] = array(
+      drupal_get_path('module', 'metrodora') . '/css/metrodora.objectdescription.css',
+    );
+    $image = array(
+      '#prefix' => '<div class="islandora-object-description-thumbnail">',
+      '#suffix' => '</div>',
+      '#theme' => 'image',
+      '#path' => url("islandora/object/{$object->id}/datastream/TN/view"),
+      '#attributes' => array(
+        'title' => $object->label,
+      ),
+    );
+    $tab['metadata']['image'] = $image;
+  }
+  $tab['metadata']['markup'] = array(
+    '#markup' => islandora_retrieve_metadata_markup($metadata_object, TRUE),
   );
+  return $tab;
 }
 
 /**
