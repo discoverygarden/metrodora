@@ -32,7 +32,7 @@ function metrodora_metadata_tab(AbstractObject $object) {
     '';
   return array(
     'metadata' => array(
-      '#markup' => "<div class='islandora-object-description-thumbnail'>$img</div>".islandora_retrieve_metadata_markup($metadata_object, TRUE),
+      '#markup' => "<div class='islandora-object-description-thumbnail'>$img</div>" . islandora_retrieve_metadata_markup($metadata_object, TRUE),
     ),
   );
 }
@@ -51,7 +51,6 @@ function metrodora_compound_child_metadata(AbstractObject $object) {
   $children = islandora_compound_object_get_parts($object);
   $pid = (!empty($children)) ? $children[0] : $object->id;
   $compound_object = islandora_object_load($pid);
-  dsm(islandora_retrieve_metadata_markup($compound_object, TRUE));
   return array(
     'metadata' => array(
       '#markup' => islandora_retrieve_metadata_markup($compound_object, TRUE),
