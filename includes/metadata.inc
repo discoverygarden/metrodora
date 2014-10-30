@@ -26,8 +26,8 @@ function metrodora_metadata_tab(AbstractObject $object) {
     $metadata_object = $object;
   }
   $tab['metadata'] = array();
-  // Add Thumbnail to Object Description Tab.
-  if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
+  // Add Thumbnail to Object Description Tab except for compound objects.
+  if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN']) && !$compound_info) {
     $tab['#attached']['css'] = array(
       drupal_get_path('module', 'metrodora') . '/css/metrodora.objectdescription.css',
     );
