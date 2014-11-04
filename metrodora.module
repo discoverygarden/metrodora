@@ -4,7 +4,6 @@
  * Metro specific Islandora functionality.
  */
 define('METRODORA_THEME_VIEW_IMAGE_FIELD', 'nothing');
-define('METRODORA_THEME_VIEW_TITLE_SOLR_FIELD', 'fgs_label_s');
 define('METRODORA_THEME_VIEW_DESCRIPTION_FIELD', 'dc.description');
 define('METRODORA_THEME_VIEW_COLLECTION_LINK_FIELD', 'nothing_1');
 define('METRODORA_THEME_VIEW_ABOUT_COLLECTION_LINK_FIELD', 'nothing_2');
