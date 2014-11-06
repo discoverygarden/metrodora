@@ -548,7 +548,7 @@ function metrodora_islandora_derivative(AbstractObject $object = NULL) {
 
   $derivatives[] = array(
     'source_dsid' => 'MODS',
-    'destination_dsid' => 'MODS', 
+    'destination_dsid' => 'MODS',
     'function' => array(
       'metrodora_clean_mods_datastream',
     ),
