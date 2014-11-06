@@ -566,26 +566,22 @@ function metrodora_islandora_derivative(AbstractObject $object = NULL) {
  * between the collection combo box and the search field, and
  * change the submit value to 'Go'.
  */
-function islandora_collection_search_form_alter(&$form, &$form_state, $form_id) {
+function metrodora_form_islandora_collection_search_form_alter(&$form, &$form_state, $form_id) {
   module_load_include('inc', 'islandora_collection_search', 'includes/search.form');
-  $collection = islandora_collection_search_get_collection_pid();
   // Instead of 'submit', change the button value to 'Go'.
   $form['simple']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Go'),
   );
-  // Only add the word 'for' if this is a collection.
-  if ($collection) {
-    // To add the element in the correct place in the form, adjust
-    // the form element weights appropriately.
-    $form['simple']['collection_select']['#weight'] = 0;
-    $form['simple']['seperator'] = array(
-      '#weight' => 1,
-      '#access' => $collection !== FALSE,
-      '#type' => 'item',
-      '#markup' => t('for'),
-    );
-    $form['simple']['islandora_simple_search_query']['#weight'] = 2;
-    $form['simple']['submit']['#weight'] = 3;
-  }
+  // To add the element in the correct place in the form, adjust
+  // the form element weights appropriately.
+  $form['simple']['collection_select']['#weight'] = 0;
+  $form['simple']['seperator'] = array(
+    '#weight' => 1,
+    '#access' => TRUE,
+    '#type' => 'item',
+    '#markup' => t('for'),
+  );
+  $form['simple']['islandora_simple_search_query']['#weight'] = 2;
+  $form['simple']['submit']['#weight'] = 3;
 }
