@@ -589,7 +589,7 @@ function metrodora_form_islandora_collection_search_form_alter(&$form, &$form_st
   $form['simple']['collection_select']['#options']['all'] = t("All Collections");
   // Instead of 'submit', change the button value to 'Go'.
   $form['simple']['submit'] = array(
-    '#type' => 'button',
+    '#type' => 'submit',
     '#value' => t('Go'),
   );
   // To add the element in the correct place in the form, adjust
