@@ -650,3 +650,4 @@ function metrodora_form_views_exposed_form_alter(&$form) {
   if ($form['#id'] == 'views-exposed-form-islandora-usage-stats-report-page') {
     $form['label']['#size'] = 100;
   }
+}
