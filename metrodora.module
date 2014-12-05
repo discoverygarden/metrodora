@@ -250,6 +250,11 @@ function metrodora_menu_alter(&$items) {
   if (isset($items['islandora/object/%islandora_object/ip_embargo'])) {
     $items['islandora/object/%islandora_object/ip_embargo']['weight'] = 3;
   }
+  // Remove the 'Print' tab if it exists.
+  if (isset($items['islandora/object/%islandora_object/print'])) {
+    // Remove the print tab, presurving the menu path.
+    $items['islandora/object/%islandora_object/print_object']['type'] = MENU_CALLBACK;
+  }
 }
 
 /**
@@ -278,6 +283,17 @@ function metrodora_form_alter(&$form, &$form_state, $form_id) {
         }
       }
     }
+  }
+  // Disable autocapitalization on login form items.
+  if ($form_id == 'user_login') {
+    $form['name']['#attributes'] = array(
+      'autocapitalize' => "off",
+      'autocorrect' => "off",
+    );
+    $form['pass']['#attributes'] = array(
+      'autocapitalize' => "off",
+      'autocorrect' => "off",
+    );
   }
 }
 
@@ -568,6 +584,9 @@ function metrodora_islandora_derivative(AbstractObject $object = NULL) {
  */
 function metrodora_form_islandora_collection_search_form_alter(&$form, &$form_state, $form_id) {
   module_load_include('inc', 'islandora_collection_search', 'includes/search.form');
+
+  // Change 'All collections' to read 'All Collections'.
+  $form['simple']['collection_select']['#options']['all'] = t("All Collections");
   // Instead of 'submit', change the button value to 'Go'.
   $form['simple']['submit'] = array(
     '#type' => 'submit',
@@ -583,7 +602,43 @@ function metrodora_form_islandora_collection_search_form_alter(&$form, &$form_st
     '#markup' => t('for'),
   );
   $form['simple']['islandora_simple_search_query']['#weight'] = 2;
+  // Auto cap on first letter sucks on mobile.
+  $form['simple']['islandora_simple_search_query']['#attributes'] = array(
+    'autocapitalize' => "off",
+    'autocorrect' => "off",
+  );
   $form['simple']['submit']['#weight'] = 3;
+}
+
+/**
+ * Alter the image_field_caption field to look like it takes a URL.
+ */
+function metrodora_field_widget_form_alter(&$element, &$form_state, $context) {
+  // Add display_field setting to field because file_field_widget_form() assumes
+  // it is set.
+  $instance = $context['instance'];
+  $settings = $instance['settings'];
+
+  if (isset($settings['image_field_caption']) && $instance['widget']['type'] == 'image_image' && $settings['image_field_caption']) {
+    foreach (element_children($element) as $delta) {
+      // Add all extra functionality provided by the image widget.
+      $element[$delta]['#process'][] = 'metrodora_image_field_caption_widget_process';
+    }
+  }
+}
+
+/**
+ * An element #process callback for the image_image field type.
+ *
+ * Expands the image_image type to include the alt and title fields.
+ */
+function metrodora_image_field_caption_widget_process($element, &$form_state, $form) {
+  // Add the additional alt and title fields.
+  $element['image_field_caption']['#title'] = t('Link');
+  $element['image_field_caption']['#base_type'] = 'textfield';
+  $element['image_field_caption']['#format'] = 'plain_text';
+  $element['image_field_caption']['#description'] = 'The link the image will redirect to.';
+  return $element;
 }
 
 /**
