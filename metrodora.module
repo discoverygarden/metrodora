@@ -640,3 +640,13 @@ function metrodora_image_field_caption_widget_process($element, &$form_state, $f
   $element['image_field_caption']['#description'] = 'The link the image will redirect to.';
   return $element;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Increases text field length.
+ */
+function metrodora_form_views_exposed_form_alter(&$form) {
+  if ($form['#id'] == 'views-exposed-form-islandora-usage-stats-report-page') {
+    $form['label']['#size'] = 100;
+  }
