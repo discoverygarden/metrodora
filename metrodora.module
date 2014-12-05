@@ -3,11 +3,11 @@
  * @file
  * Metro specific Islandora functionality.
  */
+
 define('METRODORA_THEME_VIEW_IMAGE_FIELD', 'nothing');
 define('METRODORA_THEME_VIEW_DESCRIPTION_FIELD', 'dc.description');
 define('METRODORA_THEME_VIEW_COLLECTION_LINK_FIELD', 'nothing_1');
 define('METRODORA_THEME_VIEW_ABOUT_COLLECTION_LINK_FIELD', 'nothing_2');
-
 
 /**
  * Implements hook_CMODEL_PID_islandora_overview_object().
@@ -584,4 +584,15 @@ function metrodora_form_islandora_collection_search_form_alter(&$form, &$form_st
   );
   $form['simple']['islandora_simple_search_query']['#weight'] = 2;
   $form['simple']['submit']['#weight'] = 3;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Increases text field length.
+ */
+function metrodora_form_views_exposed_form_alter(&$form) {
+  if ($form['#id'] == 'views-exposed-form-islandora-usage-stats-report-page') {
+    $form['label']['#size'] = 100;
+  }
 }
