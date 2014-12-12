@@ -638,6 +638,11 @@ function metrodora_image_field_caption_widget_process($element, &$form_state, $f
   $element['image_field_caption']['#base_type'] = 'textfield';
   $element['image_field_caption']['#format'] = 'plain_text';
   $element['image_field_caption']['#description'] = 'The link the image will redirect to.';
+
+  // Overide alt title and description for our use case.
+  $element['alt']['#title'] = t('Caption');
+  $element['alt']['#description'] = t('This text will appear under the Title text when user hovers mouse over Title text');
+
   return $element;
 }
 
