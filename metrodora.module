@@ -474,18 +474,23 @@ function metrodora_build_variable_elements_array(&$form) {
 
 /**
  * Implements hook_CMODEL_pid_islandora_view_object_alter().
+ *
+ * Customizations to metadata display for the children of compounds.
  */
 function metrodora_islandora_view_object_alter(&$object, &$rendered) {
   if (metrodora_compound_child_metadata_access($object)) {
-    // We'll assume that the empty string is the solution pack markup.
+    // Looping over each key as the target is not keyed.
     foreach ($rendered as $key => $val) {
+      // We'll assume that the empty string is solution pack markup and skip.
       if (!isset($rendered[$key]['#markup'])) {
         continue;
       }
       $markup = new DOMDocument('1.0', 'utf-8');
-      // Temporarily suppress warnings on malforned DC data.
+      // Temporarily suppress warnings on malformed DC data.
       @$markup->loadHTML($rendered[$key]['#markup']);
       $xpath = new DOMXpath($markup);
+
+      // Clear out metadata.
       $result = $xpath->query('//fieldset[contains(@class, "islandora-metadata")]');
       // Should only be one of these.
       $parent_node = FALSE;
@@ -494,8 +499,23 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
         $parent_node->removeChild($element);
         break;
       }
-      if ($parent_node) {
-        $rendered[$key]['#markup'] = $parent_node->ownerDocument->saveHTML();
+
+      // Replace description with parents.
+      $descriptions = $xpath->query('//p[@property="description"]');
+      $compound_info  = islandora_compound_object_retrieve_compound_info($object);
+      // Only do it on children as it will display on the parent.
+      $parent_compound = FALSE;
+      if (isset($compound_info['parent_pid'])) {
+        foreach ($descriptions as $element) {
+          $parent_compound = islandora_object_load($compound_info['parent_pid']);
+          $dc = DublinCore::importFromXMLString($parent_compound['DC']->content)->asArray();
+          $element->nodeValue = $dc['dc:description']['value'];
+        }
+      }
+
+      // Update HTML to be rendered only if changed.
+      if ($parent_node || $parent_compound) {
+        $rendered[$key]['#markup'] = $markup->saveHTML();
       }
     }
   }
