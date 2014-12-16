@@ -618,7 +618,6 @@ function metrodora_field_widget_form_alter(&$element, &$form_state, $context) {
   // it is set.
   $instance = $context['instance'];
   $settings = $instance['settings'];
-
   if (isset($settings['image_field_caption']) && $instance['widget']['type'] == 'image_image' && $settings['image_field_caption']) {
     foreach (element_children($element) as $delta) {
       // Add all extra functionality provided by the image widget.
@@ -633,6 +632,7 @@ function metrodora_field_widget_form_alter(&$element, &$form_state, $context) {
  * Expands the image_image type to include the alt and title fields.
  */
 function metrodora_image_field_caption_widget_process($element, &$form_state, $form) {
+	//dsm($element, "element");
   // Add the additional alt and title fields.
   $element['image_field_caption']['#title'] = t('Link');
   $element['image_field_caption']['#base_type'] = 'textfield';

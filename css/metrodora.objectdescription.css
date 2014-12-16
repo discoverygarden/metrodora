@@ -3,15 +3,11 @@
  * Style for thumbnail display in object description tabs.
  */
 
-.islandora-object-description-thumbnail
-{
-    float:right;
-}
-
 @media (max-width: 400px)
 {
     .islandora-object-description-thumbnail
     {
+        margin-top: 1em;
         float:none;
     }
 }
