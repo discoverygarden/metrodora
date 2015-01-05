@@ -510,10 +510,16 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
         $dc = DublinCore::importFromXMLString($parent_compound['DC']->content)->asArray();
         $description_replacement = $dc['dc:description']['value'];
         foreach ($descriptions as $element) {
-          $element->nodeValue = $description_replacement;
+          // Remove or replace description.
+          if (!$description_replacement) {
+            $element->parentNode->removeChild($element);
+          }
+          else {
+            $element->nodeValue = $description_replacement;
+          }
         }
         // Handle the case where the child has no description element.
-        if (!$descriptions->length) {
+        if (!$descriptions->length && $description_replacement) {
           $divs = $xpath->query('//div[h2/text()="In collections"]');
           foreach ($divs as $div) {
             $new_description_element = $markup->createElement('p', $description_replacement);
