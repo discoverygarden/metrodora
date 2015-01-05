@@ -506,10 +506,33 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
       // Only do it on children as it will display on the parent.
       $parent_compound = FALSE;
       if (isset($compound_info['parent_pid'])) {
+        $parent_compound = islandora_object_load($compound_info['parent_pid']);
+        $dc = DublinCore::importFromXMLString($parent_compound['DC']->content)->asArray();
+        $description_replacement = $dc['dc:description']['value'];
         foreach ($descriptions as $element) {
-          $parent_compound = islandora_object_load($compound_info['parent_pid']);
-          $dc = DublinCore::importFromXMLString($parent_compound['DC']->content)->asArray();
-          $element->nodeValue = $dc['dc:description']['value'];
+          // Remove or replace description.
+          if (!$description_replacement) {
+            $element->parentNode->parentNode->removeChild($element->parentNode);
+          }
+          else {
+            $element->nodeValue = $description_replacement;
+          }
+        }
+        // Handle the case where the child has no description element.
+        if (!$descriptions->length && $description_replacement) {
+          $divs = $xpath->query('//div[h2/text()="In collections"]');
+          foreach ($divs as $div) {
+            $new_description_element = $markup->createElement('p', $description_replacement);
+            $new_description_header = $markup->createElement('h2', 'Description');
+            $div->insertBefore(
+              $new_description_element,
+              $div->firstChild
+            );
+            $div->insertBefore(
+              $new_description_header,
+              $new_description_element
+            );
+          }
         }
       }
 
