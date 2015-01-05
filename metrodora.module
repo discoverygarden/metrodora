@@ -512,7 +512,7 @@ function metrodora_islandora_view_object_alter(&$object, &$rendered) {
         foreach ($descriptions as $element) {
           // Remove or replace description.
           if (!$description_replacement) {
-            $element->parentNode->removeChild($element);
+            $element->parentNode->parentNode->removeChild($element->parentNode);
           }
           else {
             $element->nodeValue = $description_replacement;
