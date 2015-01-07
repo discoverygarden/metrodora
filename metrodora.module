@@ -8,6 +8,7 @@ define('METRODORA_THEME_VIEW_IMAGE_FIELD', 'nothing');
 define('METRODORA_THEME_VIEW_DESCRIPTION_FIELD', 'dc.description');
 define('METRODORA_THEME_VIEW_COLLECTION_LINK_FIELD', 'nothing_1');
 define('METRODORA_THEME_VIEW_ABOUT_COLLECTION_LINK_FIELD', 'nothing_2');
+define('METRODORA_ITEM_TAB_PERMISSION', 'view item description tab');
 
 /**
  * Implements hook_CMODEL_PID_islandora_overview_object().
@@ -234,7 +235,7 @@ function metrodora_menu() {
     'page callback' => 'metrodora_compound_child_metadata',
     'page arguments' => array(2),
     'type' => MENU_LOCAL_TASK,
-    'access callback' => 'metrodora_compound_child_metadata_access',
+    'access callback' => 'metrodora_item_description_tab_access',
     'access arguments' => array(2),
     'file' => 'includes/metadata.inc',
     'weight' => 2,
@@ -698,4 +699,29 @@ function metrodora_form_views_exposed_form_alter(&$form) {
   if ($form['#id'] == 'views-exposed-form-islandora-usage-stats-report-page') {
     $form['label']['#size'] = 100;
   }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function metrodora_permission() {
+  return array(
+    METRODORA_ITEM_TAB_PERMISSION => array(
+      'title' => t('View item description tab'),
+      'description' => t('Display the Item Description tab to the specified role.'),
+    ),
+  );
+}
+
+/**
+ * Wrapper for permissions to view the item description tab.
+ *
+ * @param AbstractObject $object
+ *   An AbstractObject representing a Fedora object.
+ *
+ * @return bool
+ *   TRUE if the user can see the tab, FALSE otherwise.
+ */
+function metrodora_item_description_tab_access(AbstractObject $object) {
+  return islandora_object_access(METRODORA_ITEM_TAB_PERMISSION, $object) && metrodora_compound_child_metadata_access($object);
 }
